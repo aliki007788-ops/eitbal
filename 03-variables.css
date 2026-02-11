@@ -1,0 +1,90 @@
+/* ===========================================
+   ایتبال رویال - متغیرهای اصلی
+   نسخه: 2.0.0
+=========================================== */
+
+:root {
+  /* Colors - Gold Theme */
+  --gold: #FFD700;
+  --gold-dark: #FFAA00;
+  --gold-light: #FFE55C;
+  --gold-10: rgba(255, 215, 0, 0.1);
+  --gold-20: rgba(255, 215, 0, 0.2);
+  --gold-30: rgba(255, 215, 0, 0.3);
+  --gold-40: rgba(255, 215, 0, 0.4);
+  --gold-50: rgba(255, 215, 0, 0.5);
+  
+  /* Backgrounds */
+  --bg-primary: #0A0A0F;
+  --bg-secondary: #0F0F15;
+  --bg-card: rgba(255, 255, 255, 0.03);
+  --bg-hover: rgba(255, 215, 0, 0.1);
+  
+  /* Text */
+  --text-primary: #FFFFFF;
+  --text-secondary: #888888;
+  --text-disabled: #666666;
+  
+  /* Status Colors */
+  --success: #00FF88;
+  --success-20: rgba(0, 255, 136, 0.2);
+  --warning: #FFC107;
+  --warning-20: rgba(255, 193, 7, 0.2);
+  --error: #FF4444;
+  --error-20: rgba(255, 68, 68, 0.2);
+  
+  /* Gender Colors */
+  --pink: #FF69B4;
+  --pink-10: rgba(255, 105, 180, 0.1);
+  --blue: #4169E1;
+  --blue-10: rgba(65, 105, 225, 0.1);
+  
+  /* Ranks */
+  --rank-gold: #FFD700;
+  --rank-silver: #C0C0C0;
+  --rank-bronze: #CD7F32;
+  
+  /* Spacing */
+  --space-xs: 4px;
+  --space-sm: 8px;
+  --space-md: 12px;
+  --space-lg: 16px;
+  --space-xl: 20px;
+  --space-2xl: 24px;
+  --space-3xl: 32px;
+  
+  /* Border Radius */
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 16px;
+  --radius-xl: 20px;
+  --radius-2xl: 24px;
+  --radius-3xl: 32px;
+  --radius-full: 50px;
+  
+  /* Shadows */
+  --shadow-sm: 0 2px 8px rgba(0,0,0,0.2);
+  --shadow-md: 0 4px 16px rgba(0,0,0,0.3);
+  --shadow-lg: 0 8px 32px rgba(0,0,0,0.4);
+  --shadow-gold: 0 0 30px rgba(255,215,0,0.3);
+  
+  /* Transitions */
+  --transition-fast: 0.2s ease;
+  --transition-normal: 0.3s ease;
+  --transition-slow: 0.5s ease;
+  
+  /* Layout */
+  --header-height: 80px;
+  --sidebar-width: 280px;
+  --bottom-nav-height: 80px;
+  --max-width: 500px;
+  
+  /* Z-Index */
+  --z-below: -1;
+  --z-normal: 1;
+  --z-above: 10;
+  --z-header: 100;
+  --z-sidebar: 1000;
+  --z-modal: 2000;
+  --z-toast: 3000;
+}

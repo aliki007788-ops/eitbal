@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <meta name="theme-color" content="#0a0a0f">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  
+  <title>ایتبال رویال | فوتبال فانتزی ایران</title>
+  
+  <!-- PWA Manifest -->
+  <link rel="manifest" href="/manifest.json">
+  <link rel="apple-touch-icon" href="/icons/icon-192.png">
+  
+  <!-- Eitaa SDK -->
+  <script src="https://developer.eitaa.com/eitaa-web-app.js"></script>
+  
+  <!-- Firebase SDK -->
+  <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-database-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
+  
+  <!-- Styles -->
+  <link rel="stylesheet" href="02-style.css">
+  <link rel="stylesheet" href="03-variables.css">
+</head>
+<body>
+  <div id="app" class="royal-app"></div>
+  
+  <!-- Core Engine -->
+  <script src="core/04-engine.js"></script>
+  <script src="core/05-router.js"></script>
+  <script src="core/06-events.js"></script>
+  <script src="core/07-utils.js"></script>
+  <script src="core/08-http.js"></script>
+  <script src="core/09-database.js"></script>
+  
+  <!-- Modules -->
+  <script src="modules/10-auth.js"></script>
+  <script src="modules/11-header.js"></script>
+  <script src="modules/12-sidebar.js"></script>
+  <script src="modules/13-bottom-nav.js"></script>
+  <script src="modules/14-extra-menu.js"></script>
+  <script src="modules/15-streak.js"></script>
+  <script src="modules/16-predict.js"></script>
+  <script src="modules/17-team.js"></script>
+  <script src="modules/18-vote.js"></script>
+  <script src="modules/19-tap.js"></script>
+  <script src="modules/20-shop.js"></script>
+  <script src="modules/21-chat.js"></script>
+  <script src="modules/22-league.js"></script>
+  <script src="modules/23-news.js"></script>
+  <script src="modules/24-payment.js"></script>
+  
+  <!-- Pages -->
+  <script src="pages/25-home.js"></script>
+  <script src="pages/26-league-page.js"></script>
+  <script src="pages/27-matches-page.js"></script>
+  <script src="pages/28-news-page.js"></script>
+  <script src="pages/29-predict-page.js"></script>
+  <script src="pages/30-team-page.js"></script>
+  <script src="pages/31-vote-page.js"></script>
+  <script src="pages/32-tap-page.js"></script>
+  <script src="pages/33-shop-page.js"></script>
+  <script src="pages/34-chat-page.js"></script>
+  
+  <!-- Initialize App -->
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      Royal.init();
+    });
+  </script>
+</body>
+</html>
