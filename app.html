@@ -9,10 +9,6 @@
     <!-- Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;700;900&display=swap" rel="stylesheet">
     
-    <!-- Styles -->
-    <link rel="stylesheet" href="./03-variables.css">
-    <link rel="stylesheet" href="./02-style.css">
-    
     <style>
         * {
             margin: 0;
@@ -21,12 +17,21 @@
             font-family: 'Vazirmatn', 'Segoe UI', sans-serif;
         }
         
+        :root {
+            --gold: #FFD700;
+            --gold-dark: #FFAA00;
+            --gold-30: rgba(255, 215, 0, 0.3);
+            --bg-primary: #0A0A0F;
+            --text-primary: #FFFFFF;
+            --text-secondary: #888888;
+            --error: #FF4444;
+        }
+        
         body {
             background: var(--bg-primary);
             color: var(--text-primary);
             overflow-x: hidden;
             min-height: 100vh;
-            -webkit-tap-highlight-color: transparent;
         }
         
         #app {
@@ -84,6 +89,16 @@
             font-size: 14px;
         }
         
+        .loading-error {
+            margin-top: 20px;
+            color: var(--error);
+            font-size: 14px;
+            display: none;
+            max-width: 80%;
+            text-align: center;
+            line-height: 1.6;
+        }
+        
         @keyframes spin {
             to { transform: rotate(360deg); }
         }
@@ -93,7 +108,7 @@
             50% { opacity: 0.8; transform: scale(0.95); }
         }
         
-        /* Auth Check Failed */
+        /* Auth Failed Screen */
         #auth-failed {
             display: none;
             position: fixed;
@@ -161,6 +176,7 @@
         <div class="loading-logo">👑 ایتبال</div>
         <div class="loading-spinner"></div>
         <div class="loading-text">در حال بارگذاری...</div>
+        <div class="loading-error" id="errorText"></div>
     </div>
 
     <!-- Auth Failed Screen -->
@@ -178,54 +194,40 @@
     <!-- Main App Container -->
     <div id="app"></div>
 
-    <!-- ========== CORE MODULES ========== -->
-    <script src="./04-engine.js"></script>
-    <script src="./05-router.js"></script>
-    <script src="./06-events.js"></script>
-    <script src="./07-utils.js"></script>
-    <script src="./08-http.js"></script>
-    <script src="./09-database.js"></script>
-
-    <!-- ========== UI MODULES ========== -->
-    <script src="./10-auth.js"></script>
-    <script src="./11-header.js"></script>
-    <script src="./12-sidebar.js"></script>
-    <script src="./13-bottom-nav.js"></script>
-    <script src="./14-extra-menu.js"></script>
-
-    <!-- ========== FEATURE MODULES ========== -->
-    <script src="./15-streak.js"></script>
-    <script src="./16-predict.js"></script>
-    <script src="./17-team.js"></script>
-    <script src="./18-vote.js"></script>
-    <script src="./19-tap.js"></script>
-    <script src="./20-shop.js"></script>
-    <script src="./21-chat.js"></script>
-    <script src="./22-league.js"></script>
-    <script src="./23-news.js"></script>
-    <script src="./24-payment.js"></script>
-
-    <!-- ========== PAGES ========== -->
-    <script src="./25-home.js"></script>
-    <script src="./26-league-page.js"></script>
-    <script src="./27-matches-page.js"></script>
-    <script src="./28-news-page.js"></script>
-    <script src="./29-predict-page.js"></script>
-    <script src="./30-team-page.js"></script>
-    <script src="./31-vote-page.js"></script>
-    <script src="./32-tap-page.js"></script>
-    <script src="./33-shop-page.js"></script>
-    <script src="./34-chat-page.js"></script>
-
     <!-- ========== APP INITIALIZER ========== -->
     <script>
         // Check if user is authenticated
         function checkAuth() {
             const testUser = localStorage.getItem('eitabal_user');
             const royalStore = localStorage.getItem('royal_store');
-            
-            // Allow if either test user exists or has royal store data
             return testUser || (royalStore && JSON.parse(royalStore).user?.id);
+        }
+
+        // Show error
+        function showError(msg) {
+            document.querySelector('.loading-spinner').style.display = 'none';
+            document.querySelector('.loading-text').style.display = 'none';
+            const errorDiv = document.getElementById('errorText');
+            errorDiv.style.display = 'block';
+            errorDiv.textContent = msg;
+            console.error(msg);
+        }
+
+        // Load script with retry
+        function loadScript(src) {
+            return new Promise((resolve, reject) => {
+                const script = document.createElement('script');
+                script.src = src;
+                script.onload = () => {
+                    console.log('✅ Loaded:', src);
+                    resolve();
+                };
+                script.onerror = () => {
+                    console.error('❌ Failed:', src);
+                    reject(new Error('Failed to load: ' + src));
+                };
+                document.head.appendChild(script);
+            });
         }
 
         // Initialize Application
@@ -238,33 +240,81 @@
             }
 
             try {
+                // Load CSS first
+                const cssLink = document.createElement('link');
+                cssLink.rel = 'stylesheet';
+                cssLink.href = '02-style.css';
+                document.head.appendChild(cssLink);
+
+                const cssLink2 = document.createElement('link');
+                cssLink2.rel = 'stylesheet';
+                cssLink2.href = '03-variables.css';
+                document.head.appendChild(cssLink2);
+
+                // Load Core modules
+                await loadScript('core/04-engine.js');
+                await loadScript('core/05-router.js');
+                await loadScript('core/06-events.js');
+                await loadScript('core/07-utils.js');
+                await loadScript('core/08-http.js');
+                await loadScript('core/09-database.js');
+
+                // Load UI modules
+                await loadScript('modules/10-auth.js');
+                await loadScript('modules/11-header.js');
+                await loadScript('modules/12-sidebar.js');
+                await loadScript('modules/13-bottom-nav.js');
+                await loadScript('modules/14-extra-menu.js');
+
+                // Load Feature modules
+                await loadScript('modules/15-streak.js');
+                await loadScript('modules/16-predict.js');
+                await loadScript('modules/17-team.js');
+                await loadScript('modules/18-vote.js');
+                await loadScript('modules/19-tap.js');
+                await loadScript('modules/20-shop.js');
+                await loadScript('modules/21-chat.js');
+                await loadScript('modules/22-league.js');
+                await loadScript('modules/23-news.js');
+                await loadScript('modules/24-payment.js');
+
+                // Load Pages
+                await loadScript('pages/25-home.js');
+                await loadScript('pages/26-league-page.js');
+                await loadScript('pages/27-matches-page.js');
+                await loadScript('pages/28-news-page.js');
+                await loadScript('pages/29-predict-page.js');
+                await loadScript('pages/30-team-page.js');
+                await loadScript('pages/31-vote-page.js');
+                await loadScript('pages/32-tap-page.js');
+                await loadScript('pages/33-shop-page.js');
+                await loadScript('pages/34-chat-page.js');
+
                 // Initialize Royal Engine
                 if (typeof Royal !== 'undefined' && Royal.init) {
                     await Royal.init();
                     console.log('✅ App initialized successfully');
                     
-                    // Hide loading screen
                     setTimeout(() => {
                         document.getElementById('loading-screen').classList.add('hidden');
                     }, 500);
                 } else {
-                    throw new Error('Royal Engine not loaded');
+                    throw new Error('Royal Engine not found after loading scripts');
                 }
             } catch (error) {
                 console.error('❌ App initialization failed:', error);
-                document.querySelector('.loading-text').textContent = 'خطا در بارگذاری!';
-                document.querySelector('.loading-text').style.color = '#FF4444';
+                showError('خطا در بارگذاری: ' + error.message);
             }
         }
 
-        // Start app when DOM is ready
+        // Start app
         if (document.readyState === 'loading') {
             document.addEventListener('DOMContentLoaded', initApp);
         } else {
             initApp();
         }
 
-        // Prevent going back to login with back button
+        // Prevent back button
         history.pushState(null, null, location.href);
         window.onpopstate = function () {
             history.go(1);
