@@ -7,10 +7,49 @@
 const Auth = {
   // ========== INITIALIZE ==========
   async init() {
-    // Check if user is already authenticated
-    const user = Royal.get('user');
+    // Check if user is already authenticated from index.html
+    const testUser = localStorage.getItem('eitabal_user');
     
-    if (!user.phone) {
+    if (testUser) {
+      const userData = JSON.parse(testUser);
+      // Set user in Royal state
+      if (typeof Royal !== 'undefined') {
+        Royal.set('user', {
+          id: userData.id,
+          phone: userData.phone,
+          name: userData.name,
+          gender: userData.gender,
+          avatar: userData.gender === 'female' ? '👩' : '👨',
+          joinDate: userData.joinDate,
+          lastLogin: new Date().toISOString(),
+          isPremium: userData.isPremium || false,
+          premiumExpiry: null
+        });
+        
+        // Initialize stats if not exists
+        const savedStats = localStorage.getItem('royal_store');
+        if (!savedStats) {
+          Royal.set('stats', {
+            streak: 0,
+            coins: 0,
+            energy: 1000,
+            maxEnergy: 1000,
+            points: 0,
+            correctPredictions: 0,
+            totalPredictions: 0,
+            tapCount: 0,
+            todayTap: 0,
+            invites: 0
+          });
+        }
+        
+        console.log('✅ User authenticated from localStorage:', userData.name);
+        return true;
+      }
+    }
+    
+    // If no test user, show auth modal
+    if (!Royal.get('user.phone')) {
       this._showAuthModal();
     }
     
@@ -104,16 +143,21 @@ const Auth = {
     });
     
     localStorage.removeItem('eitabal_gender');
+    localStorage.removeItem('eitabal_user');
     localStorage.removeItem('royal_store');
     
     Toast.show('👋 خداحافظ!', 'info');
     
-    this._showAuthModal();
-    Router.goTo('home');
+    // Redirect to login page
+    window.location.href = './index.html';
   },
   
   // ========== MODALS ==========
   _showAuthModal() {
+    // Don't show modal if user is already logged in from localStorage
+    const testUser = localStorage.getItem('eitabal_user');
+    if (testUser) return;
+    
     const modal = document.createElement('div');
     modal.className = 'royal-modal active';
     modal.innerHTML = `
@@ -159,7 +203,7 @@ const Auth = {
           با ورود، شرایط استفاده و حریم خصوصی را می‌پذیرید.
         </p>
         
-        <button class="btn-close" onclick="this.closest('.royal-modal').remove()" 
+        <button class="btn-close" onclick="window.location.href='./index.html'" 
                 style="position: absolute; top: 16px; left: 16px; background: none; border: none; color: var(--text-secondary); font-size: 24px; cursor: pointer;">
           &times;
         </button>
@@ -214,7 +258,7 @@ const Auth = {
           <a href="#" onclick="Auth._showAuthModal(); return false;" style="color: var(--gold);">ارسال مجدد</a>
         </p>
         
-        <button class="btn-close" onclick="this.closest('.royal-modal').remove()" 
+        <button class="btn-close" onclick="window.location.href='./index.html'" 
                 style="position: absolute; top: 16px; left: 16px; background: none; border: none; color: var(--text-secondary); font-size: 24px; cursor: pointer;">
           &times;
         </button>
