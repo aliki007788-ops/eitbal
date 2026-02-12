@@ -3,6 +3,14 @@
   "name": "eitbal-royal",
   "routes": [
     {
+      "src": "/",
+      "dest": "/app.html"
+    },
+    {
+      "src": "/index.html",
+      "dest": "/app.html"
+    },
+    {
       "src": "/core/(.*)",
       "dest": "/core/$1"
     },
@@ -31,12 +39,12 @@
       "dest": "/app.html"
     },
     {
-      "src": "/(.*\\.(js|css|png|jpg|svg|ico|sql|txt))",
+      "src": "/(.*\\.(js|css|png|jpg|svg|ico|sql|txt|json))",
       "dest": "/$1"
     },
     {
       "src": "/(.*)",
-      "dest": "/index.html"
+      "dest": "/app.html"
     }
   ]
 }
