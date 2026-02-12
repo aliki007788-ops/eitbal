@@ -137,7 +137,6 @@
             letter-spacing: 2px;
         }
 
-        /* رفع مشکل وارد کردن عدد - حذف readonly */
         input[type="tel"]:focus,
         input[type="text"]:focus {
             background: rgba(0, 0, 0, 0.9);
@@ -292,7 +291,7 @@
     <div class="content">
         <h1 class="logo">EITBAL</h1>
         
-        <!-- فیلد شماره موبایل ایران - کاملاً قابل تایپ -->
+        <!-- فیلد شماره موبایل ایران -->
         <div class="input-box">
             <span class="flag-icon">🇮🇷</span>
             <span class="prefix">+98</span>
@@ -406,7 +405,6 @@
 
     // === محدود کردن ورودی به اعداد ===
     document.getElementById('phone').addEventListener('input', function (e) {
-        // فقط اعداد مجاز هستند
         this.value = this.value.replace(/[^0-9]/g, '');
         if (this.value.length > 10) this.value = this.value.slice(0, 10);
     });
@@ -454,10 +452,11 @@
         el.classList.add('active');
     }
 
-    // === مدیریت ارسال فرم ===
+    // === مدیریت ارسال فرم - تغییر یافته ===
     function handleSubmit() {
         const phone = document.getElementById('phone').value;
-        const gender = document.querySelector('.gender-option.active')?.innerHTML || '👨';
+        const genderEl = document.querySelector('.gender-option.active');
+        const gender = genderEl && genderEl.textContent.includes('👨') ? 'male' : 'female';
         const verifyCode = document.getElementById('verifyCode')?.value || '';
 
         if (!phone || phone.length < 10) {
@@ -472,13 +471,48 @@
         }
 
         if (currentMode === 'login') {
-            showMessage(`✅ کد ورود به شماره ۰۹۸${phone} ارسال شد`, 'success');
+            // ذخیره اطلاعات کاربر و ریدایرکت
+            const userData = {
+                phone: '0' + phone,
+                name: 'کاربر تست',
+                gender: gender,
+                id: 'test_' + Date.now(),
+                joinDate: new Date().toISOString(),
+                isPremium: false
+            };
+            
+            localStorage.setItem('eitabal_user', JSON.stringify(userData));
+            
+            showMessage('✅ ورود موفق! در حال انتقال...', 'success');
+            
+            setTimeout(() => {
+                window.location.href = './app.html';
+            }, 1000);
+            
         } else {
+            // ثبت‌نام
             if (!verifyCode || verifyCode.length < 4) {
                 showMessage('❌ لطفاً کد تأیید ۴ رقمی را وارد کنید', 'error');
                 return;
             }
-            showMessage(`✅ ثبت‌نام شما با موفقیت انجام شد`, 'success');
+            
+            // ذخیره اطلاعات کاربر جدید
+            const userData = {
+                phone: '0' + phone,
+                name: 'کاربر جدید',
+                gender: gender,
+                id: 'user_' + Date.now(),
+                joinDate: new Date().toISOString(),
+                isPremium: false
+            };
+            
+            localStorage.setItem('eitabal_user', JSON.stringify(userData));
+            
+            showMessage('✅ ثبت‌نام موفق! در حال انتقال...', 'success');
+            
+            setTimeout(() => {
+                window.location.href = './app.html';
+            }, 1000);
         }
     }
 
