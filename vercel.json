@@ -3,27 +3,40 @@
   "name": "eitbal-royal",
   "routes": [
     {
+      "src": "/core/(.*)",
+      "dest": "/core/$1"
+    },
+    {
+      "src": "/modules/(.*)",
+      "dest": "/modules/$1"
+    },
+    {
+      "src": "/pages/(.*)",
+      "dest": "/pages/$1"
+    },
+    {
+      "src": "/api/(.*)",
+      "dest": "/api/$1"
+    },
+    {
+      "src": "/database/(.*)",
+      "dest": "/database/$1"
+    },
+    {
+      "src": "/admin/(.*)",
+      "dest": "/admin/$1"
+    },
+    {
       "src": "/app.html",
       "dest": "/app.html"
     },
     {
-      "src": "/[^.]+\\.(js|css|png|jpg|svg|ico|sql|txt)",
-      "dest": "/$0"
+      "src": "/(.*\\.(js|css|png|jpg|svg|ico|sql|txt))",
+      "dest": "/$1"
     },
     {
       "src": "/(.*)",
       "dest": "/index.html"
-    }
-  ],
-  "headers": [
-    {
-      "source": "/(.*)",
-      "headers": [
-        {
-          "key": "Cache-Control",
-          "value": "public, max-age=0, must-revalidate"
-        }
-      ]
     }
   ]
 }
