@@ -10,8 +10,8 @@
     <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;700;900&display=swap" rel="stylesheet">
     
     <!-- Styles -->
-    <link rel="stylesheet" href="03-variables.css">
-    <link rel="stylesheet" href="02-style.css">
+    <link rel="stylesheet" href="./03-variables.css">
+    <link rel="stylesheet" href="./02-style.css">
     
     <style>
         * {
@@ -145,12 +145,12 @@
             color: var(--bg-primary);
             font-weight: 700;
             cursor: pointer;
-            transition: var(--transition-normal);
+            transition: all 0.3s ease;
         }
         
         .btn:hover {
             transform: scale(1.05);
-            box-shadow: var(--shadow-gold);
+            box-shadow: 0 0 30px rgba(255, 215, 0, 0.3);
         }
     </style>
 </head>
@@ -170,7 +170,7 @@
         <div class="auth-failed-text">
             لطفاً ابتدا از صفحه ورود وارد شوید
         </div>
-        <button class="btn" onclick="window.location.href='index.html'" style="padding: 16px 40px;">
+        <button class="btn" onclick="window.location.href='./index.html'" style="padding: 16px 40px;">
             رفتن به صفحه ورود
         </button>
     </div>
@@ -179,43 +179,43 @@
     <div id="app"></div>
 
     <!-- ========== CORE MODULES ========== -->
-    <script src="04-engine.js"></script>
-    <script src="05-router.js"></script>
-    <script src="06-events.js"></script>
-    <script src="07-utils.js"></script>
-    <script src="08-http.js"></script>
-    <script src="09-database.js"></script>
+    <script src="./04-engine.js"></script>
+    <script src="./05-router.js"></script>
+    <script src="./06-events.js"></script>
+    <script src="./07-utils.js"></script>
+    <script src="./08-http.js"></script>
+    <script src="./09-database.js"></script>
 
     <!-- ========== UI MODULES ========== -->
-    <script src="10-auth.js"></script>
-    <script src="11-header.js"></script>
-    <script src="12-sidebar.js"></script>
-    <script src="13-bottom-nav.js"></script>
-    <script src="14-extra-menu.js"></script>
+    <script src="./10-auth.js"></script>
+    <script src="./11-header.js"></script>
+    <script src="./12-sidebar.js"></script>
+    <script src="./13-bottom-nav.js"></script>
+    <script src="./14-extra-menu.js"></script>
 
     <!-- ========== FEATURE MODULES ========== -->
-    <script src="15-streak.js"></script>
-    <script src="16-predict.js"></script>
-    <script src="17-team.js"></script>
-    <script src="18-vote.js"></script>
-    <script src="19-tap.js"></script>
-    <script src="20-shop.js"></script>
-    <script src="21-chat.js"></script>
-    <script src="22-league.js"></script>
-    <script src="23-news.js"></script>
-    <script src="24-payment.js"></script>
+    <script src="./15-streak.js"></script>
+    <script src="./16-predict.js"></script>
+    <script src="./17-team.js"></script>
+    <script src="./18-vote.js"></script>
+    <script src="./19-tap.js"></script>
+    <script src="./20-shop.js"></script>
+    <script src="./21-chat.js"></script>
+    <script src="./22-league.js"></script>
+    <script src="./23-news.js"></script>
+    <script src="./24-payment.js"></script>
 
     <!-- ========== PAGES ========== -->
-    <script src="25-home.js"></script>
-    <script src="26-league-page.js"></script>
-    <script src="27-matches-page.js"></script>
-    <script src="28-news-page.js"></script>
-    <script src="29-predict-page.js"></script>
-    <script src="30-team-page.js"></script>
-    <script src="31-vote-page.js"></script>
-    <script src="32-tap-page.js"></script>
-    <script src="33-shop-page.js"></script>
-    <script src="34-chat-page.js"></script>
+    <script src="./25-home.js"></script>
+    <script src="./26-league-page.js"></script>
+    <script src="./27-matches-page.js"></script>
+    <script src="./28-news-page.js"></script>
+    <script src="./29-predict-page.js"></script>
+    <script src="./30-team-page.js"></script>
+    <script src="./31-vote-page.js"></script>
+    <script src="./32-tap-page.js"></script>
+    <script src="./33-shop-page.js"></script>
+    <script src="./34-chat-page.js"></script>
 
     <!-- ========== APP INITIALIZER ========== -->
     <script>
@@ -253,7 +253,7 @@
             } catch (error) {
                 console.error('❌ App initialization failed:', error);
                 document.querySelector('.loading-text').textContent = 'خطا در بارگذاری!';
-                document.querySelector('.loading-text').style.color = 'var(--error)';
+                document.querySelector('.loading-text').style.color = '#FF4444';
             }
         }
 
