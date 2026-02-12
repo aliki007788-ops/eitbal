@@ -1,1277 +1,252 @@
-<!DOCTYPE html>
+ببین این فایل app  به این ایتبال مرتبط میشه <!DOCTYPE html>
 <html lang="fa" dir="rtl">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-  <title>ایتبال رویال ⚽ | EITABAL ROYAL</title>
-  
-  <!-- Fonts -->
-  <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;400;600;700;900&display=swap" rel="stylesheet">
-  
-  <!-- GSAP -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
-  
-  <style>
-    /* ==================== RESET ROYAL ==================== */
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-      font-family: 'Vazirmatn', sans-serif;
-    }
-
-    body {
-      background: radial-gradient(ellipse at bottom, #0a0b0e, #030304);
-      color: #fff;
-      overflow-x: hidden;
-      position: relative;
-      min-height: 100vh;
-    }
-
-    /* ==================== پس‌زمینه سینماتیک ==================== */
-    .royal-bg {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      z-index: -1;
-      overflow: hidden;
-    }
-
-    .gold-dust {
-      position: absolute;
-      width: 100%;
-      height: 100%;
-      background: radial-gradient(circle at 50% 50%, rgba(255, 215, 0, 0.03) 0%, transparent 70%);
-      animation: dustFloat 20s infinite alternate;
-    }
-
-    .royal-particles {
-      position: absolute;
-      width: 100%;
-      height: 100%;
-      background-image: 
-        radial-gradient(circle at 20% 80%, rgba(255, 215, 0, 0.1) 0.5px, transparent 0.5px),
-        radial-gradient(circle at 80% 20%, rgba(0, 255, 136, 0.1) 0.5px, transparent 0.5px),
-        radial-gradient(circle at 40% 40%, rgba(255, 215, 0, 0.08) 0.8px, transparent 0.8px),
-        radial-gradient(circle at 70% 70%, rgba(0, 255, 136, 0.08) 0.8px, transparent 0.8px);
-      background-size: 100px 100px;
-      opacity: 0.5;
-      animation: particleFloat 40s linear infinite;
-    }
-
-    @keyframes dustFloat {
-      0% { transform: scale(1) translate(0, 0); opacity: 0.3; }
-      100% { transform: scale(1.2) translate(-20px, -20px); opacity: 0.6; }
-    }
-
-    @keyframes particleFloat {
-      0% { background-position: 0 0; }
-      100% { background-position: 100px 100px; }
-    }
-
-    /* ==================== هدر سلطنتی ==================== */
-    .royal-header {
-      position: fixed;
-      top: 0;
-      left: 0;
-      right: 0;
-      height: 90px;
-      background: rgba(3, 3, 4, 0.85);
-      backdrop-filter: blur(20px);
-      border-bottom: 1px solid rgba(255, 215, 0, 0.3);
-      z-index: 100;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 0 25px;
-      box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
-    }
-
-    .royal-logo {
-      display: flex;
-      align-items: center;
-      gap: 15px;
-    }
-
-    .logo-crown {
-      width: 55px;
-      height: 55px;
-      background: linear-gradient(135deg, #FFD700, #FFA500);
-      border-radius: 18px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 32px;
-      box-shadow: 0 0 30px rgba(255, 215, 0, 0.5);
-      position: relative;
-      overflow: hidden;
-    }
-
-    .logo-crown::before {
-      content: '';
-      position: absolute;
-      top: -50%;
-      left: -50%;
-      width: 200%;
-      height: 200%;
-      background: linear-gradient(45deg, transparent, rgba(255, 255, 255, 0.4), transparent);
-      animation: shine 4s infinite;
-    }
-
-    .logo-text {
-      font-size: 26px;
-      font-weight: 900;
-      background: linear-gradient(135deg, #FFD700, #00FF88);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      letter-spacing: 2px;
-    }
-
-    .logo-text span {
-      font-size: 14px;
-      background: rgba(255, 215, 0, 0.2);
-      padding: 4px 12px;
-      border-radius: 30px;
-      color: #FFD700;
-      -webkit-text-fill-color: #FFD700;
-      margin-left: 10px;
-    }
-
-    /* ==================== استریک سلطنتی ==================== */
-    .royal-streak {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      background: linear-gradient(135deg, rgba(255, 215, 0, 0.1), rgba(0, 255, 136, 0.05));
-      padding: 8px 20px;
-      border-radius: 40px;
-      border: 1px solid rgba(255, 215, 0, 0.5);
-      backdrop-filter: blur(10px);
-      cursor: pointer;
-      transition: 0.4s;
-    }
-
-    .royal-streak:hover {
-      border-color: #FFD700;
-      box-shadow: 0 0 30px rgba(255, 215, 0, 0.3);
-      transform: scale(1.05);
-    }
-
-    .streak-crown {
-      font-size: 24px;
-      animation: crownFloat 3s ease-in-out infinite;
-    }
-
-    @keyframes crownFloat {
-      0%, 100% { transform: translateY(0); }
-      50% { transform: translateY(-5px); }
-    }
-
-    .streak-number {
-      font-size: 24px;
-      font-weight: 900;
-      background: linear-gradient(135deg, #FFD700, #FFA500);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-    }
-
-    /* ==================== همبرگر کریستالی ==================== */
-    .crystal-hamburger {
-      width: 55px;
-      height: 55px;
-      background: rgba(255, 255, 255, 0.03);
-      backdrop-filter: blur(10px);
-      border: 1px solid rgba(255, 215, 0, 0.3);
-      border-radius: 18px;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      gap: 8px;
-      cursor: pointer;
-      transition: 0.4s;
-      position: fixed;
-      top: 20px;
-      right: 20px;
-      z-index: 1001;
-    }
-
-    .crystal-hamburger:hover {
-      border-color: #FFD700;
-      box-shadow: 0 0 30px rgba(255, 215, 0, 0.2);
-      transform: scale(0.95);
-    }
-
-    .crystal-line {
-      width: 30px;
-      height: 2.5px;
-      background: linear-gradient(90deg, #FFD700, #00FF88);
-      border-radius: 3px;
-      transition: 0.4s;
-    }
-
-    .crystal-hamburger.active .crystal-line:nth-child(1) {
-      transform: translateY(10.5px) rotate(45deg);
-      width: 30px;
-    }
-
-    .crystal-hamburger.active .crystal-line:nth-child(2) {
-      opacity: 0;
-      transform: translateX(-20px);
-    }
-
-    .crystal-hamburger.active .crystal-line:nth-child(3) {
-      transform: translateY(-10.5px) rotate(-45deg);
-      width: 30px;
-    }
-
-    /* ==================== سایدبار رویال ==================== */
-    .royal-sidebar {
-      position: fixed;
-      top: 0;
-      right: -350px;
-      width: 300px;
-      height: 100vh;
-      background: rgba(3, 3, 4, 0.98);
-      backdrop-filter: blur(30px);
-      border-left: 1px solid rgba(255, 215, 0, 0.3);
-      z-index: 1000;
-      transition: 0.5s cubic-bezier(0.16, 1, 0.3, 1);
-      display: flex;
-      flex-direction: column;
-      box-shadow: -20px 0 60px rgba(0, 0, 0, 0.8);
-    }
-
-    .royal-sidebar.active {
-      right: 0;
-    }
-
-    .sidebar-crown {
-      padding: 40px 30px;
-      background: linear-gradient(135deg, rgba(255, 215, 0, 0.1), rgba(0, 255, 136, 0.05));
-      border-bottom: 1px solid rgba(255, 215, 0, 0.3);
-    }
-
-    .crown-avatar {
-      width: 90px;
-      height: 90px;
-      background: linear-gradient(135deg, #FFD700, #FFA500);
-      border-radius: 30px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 44px;
-      margin-bottom: 20px;
-      box-shadow: 0 0 50px rgba(255, 215, 0, 0.4);
-      position: relative;
-    }
-
-    .crown-avatar::after {
-      content: '👑';
-      position: absolute;
-      top: -25px;
-      left: 50%;
-      transform: translateX(-50%);
-      font-size: 30px;
-      filter: drop-shadow(0 0 10px gold);
-    }
-
-    .sidebar-user-name {
-      font-size: 24px;
-      font-weight: 900;
-      margin-bottom: 8px;
-      background: linear-gradient(135deg, #FFD700, #00FF88);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-    }
-
-    .sidebar-user-title {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      color: #888;
-      font-size: 14px;
-    }
-
-    .sidebar-user-title span {
-      background: rgba(255, 215, 0, 0.2);
-      padding: 5px 15px;
-      border-radius: 30px;
-      color: #FFD700;
-    }
-
-    .sidebar-menu-royal {
-      flex: 1;
-      padding: 30px;
-      overflow-y: auto;
-    }
-
-    .menu-item-royal {
-      display: flex;
-      align-items: center;
-      gap: 18px;
-      padding: 15px 20px;
-      border-radius: 16px;
-      color: #fff;
-      text-decoration: none;
-      margin-bottom: 8px;
-      transition: 0.4s;
-      position: relative;
-      overflow: hidden;
-    }
-
-    .menu-item-royal::before {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: -100%;
-      width: 100%;
-      height: 100%;
-      background: linear-gradient(90deg, transparent, rgba(255, 215, 0, 0.1), transparent);
-      transition: 0.5s;
-    }
-
-    .menu-item-royal:hover::before {
-      left: 100%;
-    }
-
-    .menu-item-royal:hover {
-      background: rgba(255, 215, 0, 0.05);
-      transform: translateX(-5px);
-    }
-
-    .menu-item-royal.active {
-      background: rgba(255, 215, 0, 0.1);
-      border-right: 4px solid #FFD700;
-      box-shadow: -10px 0 30px rgba(255, 215, 0, 0.2);
-    }
-
-    .menu-icon-royal {
-      width: 45px;
-      height: 45px;
-      background: rgba(255, 255, 255, 0.03);
-      border: 1px solid rgba(255, 215, 0, 0.2);
-      border-radius: 14px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 22px;
-      transition: 0.4s;
-    }
-
-    .menu-item-royal:hover .menu-icon-royal {
-      background: rgba(255, 215, 0, 0.1);
-      border-color: #FFD700;
-      transform: scale(1.1);
-    }
-
-    .menu-text-royal {
-      flex: 1;
-      font-weight: 600;
-    }
-
-    .menu-badge-royal {
-      background: linear-gradient(135deg, #FFD700, #FFA500);
-      color: #000;
-      padding: 4px 12px;
-      border-radius: 30px;
-      font-size: 11px;
-      font-weight: 900;
-    }
-
-    /* ==================== محتوای اصلی رویال ==================== */
-    .royal-main {
-      margin-top: 110px;
-      padding: 20px;
-      padding-bottom: 140px;
-      max-width: 500px;
-      margin-left: auto;
-      margin-right: auto;
-      position: relative;
-      z-index: 10;
-    }
-
-    /* ==================== صفحات ==================== */
-    .royal-page {
-      display: none;
-      animation: royalFade 0.6s cubic-bezier(0.16, 1, 0.3, 1);
-    }
-
-    .royal-page.active {
-      display: block;
-    }
-
-    @keyframes royalFade {
-      from {
-        opacity: 0;
-        transform: translateY(30px);
-      }
-      to {
-        opacity: 1;
-        transform: translateY(0);
-      }
-    }
-
-    /* ==================== کارت‌های کریستالی ==================== */
-    .crystal-card {
-      background: rgba(255, 255, 255, 0.02);
-      backdrop-filter: blur(20px);
-      border: 1px solid rgba(255, 215, 0, 0.2);
-      border-radius: 30px;
-      padding: 25px;
-      margin-bottom: 20px;
-      position: relative;
-      overflow: hidden;
-      transition: 0.5s;
-    }
-
-    .crystal-card::before {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: 0;
-      right: 0;
-      height: 2px;
-      background: linear-gradient(90deg, transparent, #FFD700, #00FF88, #FFD700, transparent);
-      opacity: 0.5;
-    }
-
-    .crystal-card:hover {
-      border-color: rgba(255, 215, 0, 0.5);
-      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
-      transform: translateY(-5px);
-    }
-
-    .card-title-royal {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      margin-bottom: 20px;
-      font-size: 20px;
-      font-weight: 900;
-      background: linear-gradient(135deg, #FFD700, #00FF88);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-    }
-
-    /* ==================== منوی پایین سلطنتی ==================== */
-    .royal-bottom-nav {
-      position: fixed;
-      bottom: 25px;
-      left: 20px;
-      right: 20px;
-      background: rgba(3, 3, 4, 0.9);
-      backdrop-filter: blur(30px);
-      border: 1px solid rgba(255, 215, 0, 0.3);
-      border-radius: 60px;
-      padding: 10px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      z-index: 100;
-      box-shadow: 0 10px 50px rgba(0, 0, 0, 0.8);
-    }
-
-    .nav-item-royal {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 4px;
-      color: #888;
-      transition: 0.4s;
-      cursor: pointer;
-      padding: 8px 12px;
-      border-radius: 40px;
-      flex: 0.8;
-    }
-
-    .nav-item-royal.active {
-      background: linear-gradient(135deg, rgba(255, 215, 0, 0.15), rgba(0, 255, 136, 0.05));
-      color: #FFD700;
-    }
-
-    .nav-icon-royal {
-      font-size: 24px;
-      transition: 0.4s;
-    }
-
-    .nav-label-royal {
-      font-size: 11px;
-      font-weight: 700;
-    }
-
-    /* ==================== دکمه وسط سلطنتی (۴ سرویس) ==================== */
-    .royal-crown-button {
-      width: 75px;
-      height: 75px;
-      background: linear-gradient(135deg, #FFD700, #FFA500);
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      cursor: pointer;
-      transition: 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
-      box-shadow: 0 0 40px rgba(255, 215, 0, 0.6);
-      position: relative;
-      margin-top: -30px;
-    }
-
-    .royal-crown-button:hover {
-      transform: scale(1.15) rotate(180deg);
-      box-shadow: 0 0 60px rgba(255, 215, 0, 0.9);
-    }
-
-    .crown-icon {
-      font-size: 36px;
-      filter: drop-shadow(0 0 10px rgba(0, 0, 0, 0.5));
-      animation: crownSpin 12s infinite linear;
-    }
-
-    @keyframes crownSpin {
-      from { transform: rotate(0deg); }
-      to { transform: rotate(360deg); }
-    }
-
-    /* ==================== منوی اضافی سلطنتی (۴+۲ سرویس) ==================== */
-    .royal-extra-menu {
-      position: fixed;
-      bottom: 150px;
-      left: 50%;
-      transform: translateX(-50%) scale(0.8);
-      background: rgba(3, 3, 4, 0.98);
-      backdrop-filter: blur(40px);
-      border: 1px solid rgba(255, 215, 0, 0.5);
-      border-radius: 50px;
-      padding: 25px;
-      display: none;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 20px;
-      z-index: 99;
-      opacity: 0;
-      transition: 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
-      box-shadow: 0 30px 80px rgba(0, 0, 0, 0.8), 0 0 0 2px rgba(255, 215, 0, 0.1);
-      max-width: 450px;
-      width: 90%;
-    }
-
-    .royal-extra-menu.active {
-      display: grid;
-      opacity: 1;
-      transform: translateX(-50%) scale(1);
-      animation: royalFloat 3s infinite alternate;
-    }
-
-    @keyframes royalFloat {
-      0% { box-shadow: 0 30px 80px rgba(0, 0, 0, 0.8), 0 0 0 2px rgba(255, 215, 0, 0.1); }
-      100% { box-shadow: 0 40px 100px rgba(0, 0, 0, 0.9), 0 0 0 4px rgba(255, 215, 0, 0.3); }
-    }
-
-    .royal-extra-item {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 12px;
-      padding: 20px 10px;
-      background: rgba(255, 255, 255, 0.02);
-      border: 1px solid rgba(255, 215, 0, 0.2);
-      border-radius: 30px;
-      cursor: pointer;
-      transition: 0.5s;
-      position: relative;
-      overflow: hidden;
-    }
-
-    .royal-extra-item::before {
-      content: '';
-      position: absolute;
-      top: -50%;
-      left: -50%;
-      width: 200%;
-      height: 200%;
-      background: radial-gradient(circle, rgba(255, 215, 0, 0.2), transparent 70%);
-      opacity: 0;
-      transition: 0.5s;
-    }
-
-    .royal-extra-item:hover::before {
-      opacity: 1;
-    }
-
-    .royal-extra-item:hover {
-      background: rgba(255, 215, 0, 0.05);
-      border-color: #FFD700;
-      transform: translateY(-10px) scale(1.05);
-      box-shadow: 0 20px 40px rgba(255, 215, 0, 0.3);
-    }
-
-    .royal-extra-icon {
-      width: 65px;
-      height: 65px;
-      background: linear-gradient(135deg, rgba(255, 215, 0, 0.1), rgba(0, 255, 136, 0.05));
-      border-radius: 25px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 32px;
-      transition: 0.5s;
-    }
-
-    .royal-extra-item:hover .royal-extra-icon {
-      background: linear-gradient(135deg, #FFD700, #FFA500);
-      transform: scale(1.1) rotate(5deg);
-      box-shadow: 0 0 30px rgba(255, 215, 0, 0.6);
-    }
-
-    .royal-extra-label {
-      font-size: 13px;
-      font-weight: 700;
-      background: linear-gradient(135deg, #FFD700, #00FF88);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-    }
-
-    /* ==================== اورلی طلایی ==================== */
-    .golden-overlay {
-      position: fixed;
-      top: 0;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      background: rgba(0, 0, 0, 0.8);
-      backdrop-filter: blur(10px);
-      z-index: 998;
-      opacity: 0;
-      visibility: hidden;
-      transition: 0.5s;
-    }
-
-    .golden-overlay.active {
-      opacity: 1;
-      visibility: visible;
-    }
-
-    /* ==================== جدول لیگ سلطنتی ==================== */
-    .royal-league-table {
-      width: 100%;
-      border-collapse: collapse;
-    }
-
-    .royal-league-table th {
-      text-align: right;
-      padding: 15px 5px;
-      font-size: 12px;
-      color: #FFD700;
-      font-weight: 700;
-      border-bottom: 1px solid rgba(255, 215, 0, 0.3);
-    }
-
-    .royal-league-table td {
-      padding: 15px 5px;
-      font-size: 13px;
-      border-bottom: 1px solid rgba(255, 255, 255, 0.03);
-    }
-
-    .rank-gold {
-      display: inline-block;
-      width: 30px;
-      height: 30px;
-      line-height: 30px;
-      text-align: center;
-      background: rgba(255, 215, 0, 0.1);
-      border: 1px solid rgba(255, 215, 0, 0.5);
-      border-radius: 10px;
-      color: #FFD700;
-      font-weight: 900;
-    }
-
-    .rank-silver {
-      display: inline-block;
-      width: 30px;
-      height: 30px;
-      line-height: 30px;
-      text-align: center;
-      background: rgba(192, 192, 192, 0.1);
-      border: 1px solid rgba(192, 192, 192, 0.5);
-      border-radius: 10px;
-      color: #C0C0C0;
-      font-weight: 900;
-    }
-
-    .rank-bronze {
-      display: inline-block;
-      width: 30px;
-      height: 30px;
-      line-height: 30px;
-      text-align: center;
-      background: rgba(205, 127, 50, 0.1);
-      border: 1px solid rgba(205, 127, 50, 0.5);
-      border-radius: 10px;
-      color: #CD7F32;
-      font-weight: 900;
-    }
-
-    /* ==================== کارت مسابقات رویال ==================== */
-    .royal-match-card {
-      background: rgba(255, 255, 255, 0.02);
-      border: 1px solid rgba(255, 215, 0, 0.2);
-      border-radius: 30px;
-      padding: 25px;
-      margin-bottom: 20px;
-      transition: 0.5s;
-    }
-
-    .royal-match-card:hover {
-      border-color: #FFD700;
-      box-shadow: 0 0 40px rgba(255, 215, 0, 0.2);
-    }
-
-    .royal-teams {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      margin-bottom: 20px;
-    }
-
-    .royal-team {
-      text-align: center;
-      flex: 1;
-    }
-
-    .royal-team-logo {
-      width: 80px;
-      height: 80px;
-      background: rgba(255, 255, 255, 0.03);
-      border: 2px solid rgba(255, 215, 0, 0.3);
-      border-radius: 25px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 40px;
-      margin: 0 auto 15px;
-      transition: 0.5s;
-    }
-
-    .royal-team:hover .royal-team-logo {
-      border-color: #FFD700;
-      box-shadow: 0 0 40px rgba(255, 215, 0, 0.4);
-      transform: scale(1.1);
-    }
-
-    .royal-team-name {
-      font-size: 16px;
-      font-weight: 700;
-    }
-
-    .royal-vs {
-      font-size: 18px;
-      font-weight: 900;
-      color: #FFD700;
-      padding: 0 25px;
-      position: relative;
-    }
-
-    .royal-vs::before,
-    .royal-vs::after {
-      content: '';
-      position: absolute;
-      top: 50%;
-      width: 40px;
-      height: 1px;
-      background: linear-gradient(90deg, transparent, #FFD700, transparent);
-    }
-
-    .royal-vs::before { right: 30px; }
-    .royal-vs::after { left: 30px; }
-
-    /* ==================== دکمه تپ سلطنتی ==================== */
-    .royal-tap-container {
-      text-align: center;
-      padding: 30px 20px;
-    }
-
-    .royal-tap-button {
-      width: 240px;
-      height: 240px;
-      border-radius: 50%;
-      background: radial-gradient(circle at 30% 30%, #FFD700, #FFA500);
-      border: none;
-      font-size: 90px;
-      color: #000;
-      cursor: pointer;
-      box-shadow: 0 0 80px rgba(255, 215, 0, 0.6);
-      transition: 0.2s;
-      margin-bottom: 40px;
-      position: relative;
-    }
-
-    .royal-tap-button::after {
-      content: '👑';
-      position: absolute;
-      top: -20px;
-      right: -20px;
-      font-size: 50px;
-      filter: drop-shadow(0 0 20px gold);
-      animation: crownSpin 10s infinite linear;
-    }
-
-    .royal-tap-button:active {
-      transform: scale(0.92);
-    }
-
-    .royal-tap-button.disabled {
-      opacity: 0.5;
-      filter: grayscale(1);
-    }
-
-    /* ==================== سوئیچ کریستالی ==================== */
-    .crystal-switch {
-      width: 80px;
-      height: 40px;
-      background: rgba(255, 255, 255, 0.05);
-      border: 1px solid rgba(255, 215, 0, 0.3);
-      border-radius: 40px;
-      position: relative;
-      cursor: pointer;
-      transition: 0.4s;
-    }
-
-    .crystal-switch.active {
-      background: rgba(255, 215, 0, 0.15);
-      border-color: #FFD700;
-    }
-
-    .crystal-slider {
-      width: 34px;
-      height: 34px;
-      background: linear-gradient(135deg, #FFD700, #FFA500);
-      border-radius: 50%;
-      position: absolute;
-      top: 2px;
-      right: 2px;
-      transition: 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 16px;
-      color: #000;
-    }
-
-    .crystal-switch.active .crystal-slider {
-      right: 44px;
-      transform: rotate(360deg);
-    }
-
-    /* ==================== اخبار رویال ==================== */
-    .royal-news-card {
-      display: flex;
-      gap: 20px;
-      padding: 20px;
-      background: rgba(255, 255, 255, 0.02);
-      border: 1px solid rgba(255, 215, 0, 0.1);
-      border-radius: 25px;
-      margin-bottom: 15px;
-      transition: 0.5s;
-    }
-
-    .royal-news-card:hover {
-      background: rgba(255, 215, 0, 0.05);
-      border-color: #FFD700;
-      transform: translateX(-5px);
-    }
-
-    .royal-news-icon {
-      width: 70px;
-      height: 70px;
-      background: linear-gradient(135deg, rgba(255, 215, 0, 0.1), rgba(0, 255, 136, 0.05));
-      border: 1px solid rgba(255, 215, 0, 0.3);
-      border-radius: 20px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 32px;
-    }
-
-    .royal-news-content {
-      flex: 1;
-    }
-
-    .royal-news-title {
-      font-size: 15px;
-      font-weight: 700;
-      margin-bottom: 8px;
-      color: #fff;
-    }
-
-    .royal-news-meta {
-      display: flex;
-      gap: 20px;
-      font-size: 11px;
-      color: #FFD700;
-    }
-
-    .royal-news-source {
-      display: flex;
-      align-items: center;
-      gap: 6px;
-    }
-
-    /* ==================== رأی‌گیری سلطنتی ==================== */
-    .royal-vote-card {
-      background: rgba(255, 255, 255, 0.02);
-      border: 1px solid rgba(255, 215, 0, 0.2);
-      border-radius: 30px;
-      padding: 25px;
-      margin-bottom: 20px;
-    }
-
-    .royal-gender-votes {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 20px;
-      margin: 25px 0;
-    }
-
-    .royal-gender-box {
-      padding: 25px;
-      border-radius: 25px;
-      text-align: center;
-      cursor: pointer;
-      transition: 0.5s;
-    }
-
-    .royal-gender-box.female {
-      background: linear-gradient(135deg, rgba(255, 105, 180, 0.1), rgba(255, 105, 180, 0.05));
-      border: 1px solid rgba(255, 105, 180, 0.5);
-    }
-
-    .royal-gender-box.male {
-      background: linear-gradient(135deg, rgba(65, 105, 225, 0.1), rgba(65, 105, 225, 0.05));
-      border: 1px solid rgba(65, 105, 225, 0.5);
-    }
-
-    .royal-gender-box:hover {
-      transform: translateY(-10px);
-      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
-    }
-
-    .royal-gender-icon {
-      font-size: 40px;
-      margin-bottom: 10px;
-    }
-
-    .royal-gender-count {
-      font-size: 28px;
-      font-weight: 900;
-    }
-
-    .royal-gender-count.female {
-      color: #FF69B4;
-    }
-
-    .royal-gender-count.male {
-      color: #4169E1;
-    }
-
-    /* ==================== فروشگاه رویال ==================== */
-    .royal-shop-grid {
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 20px;
-    }
-
-    .royal-shop-item {
-      background: rgba(255, 255, 255, 0.02);
-      border: 1px solid rgba(255, 215, 0, 0.2);
-      border-radius: 30px;
-      padding: 25px 20px;
-      text-align: center;
-      transition: 0.5s;
-      position: relative;
-      overflow: hidden;
-    }
-
-    .royal-shop-item::before {
-      content: '👑';
-      position: absolute;
-      top: -20px;
-      right: -20px;
-      font-size: 60px;
-      opacity: 0.1;
-      transform: rotate(15deg);
-    }
-
-    .royal-shop-item:hover {
-      border-color: #FFD700;
-      transform: translateY(-10px);
-      box-shadow: 0 30px 60px rgba(255, 215, 0, 0.2);
-    }
-
-    .royal-shop-icon {
-      font-size: 50px;
-      margin-bottom: 15px;
-    }
-
-    .royal-shop-name {
-      font-size: 16px;
-      font-weight: 900;
-      margin-bottom: 8px;
-      background: linear-gradient(135deg, #FFD700, #00FF88);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-    }
-
-    .royal-shop-price {
-      color: #FFD700;
-      font-size: 20px;
-      font-weight: 900;
-      margin: 15px 0;
-    }
-
-    .royal-buy-btn {
-      width: 100%;
-      padding: 14px;
-      background: linear-gradient(135deg, #FFD700, #FFA500);
-      border: none;
-      border-radius: 40px;
-      color: #000;
-      font-weight: 900;
-      cursor: pointer;
-      transition: 0.4s;
-      font-size: 14px;
-    }
-
-    .royal-buy-btn:hover {
-      transform: scale(1.05);
-      box-shadow: 0 0 30px rgba(255, 215, 0, 0.6);
-    }
-
-    /* ==================== چت رویال ==================== */
-    .royal-chat {
-      background: rgba(255, 255, 255, 0.02);
-      border: 1px solid rgba(255, 215, 0, 0.2);
-      border-radius: 30px;
-      overflow: hidden;
-    }
-
-    .royal-chat-header {
-      padding: 25px;
-      background: linear-gradient(135deg, rgba(255, 215, 0, 0.1), rgba(0, 255, 136, 0.05));
-      border-bottom: 1px solid rgba(255, 215, 0, 0.3);
-    }
-
-    .royal-chat-messages {
-      height: 350px;
-      overflow-y: auto;
-      padding: 25px;
-    }
-
-    .royal-chat-bubble {
-      background: rgba(255, 255, 255, 0.03);
-      padding: 15px 20px;
-      border-radius: 25px;
-      max-width: 75%;
-      margin-bottom: 15px;
-    }
-
-    .royal-chat-bubble.own {
-      background: rgba(255, 215, 0, 0.1);
-      margin-left: auto;
-      border: 1px solid rgba(255, 215, 0, 0.3);
-    }
-
-    .royal-chat-input {
-      display: flex;
-      gap: 15px;
-      padding: 20px;
-      background: rgba(0, 0, 0, 0.3);
-    }
-
-    .royal-chat-input input {
-      flex: 1;
-      padding: 16px 25px;
-      background: rgba(255, 255, 255, 0.03);
-      border: 1px solid rgba(255, 215, 0, 0.2);
-      border-radius: 40px;
-      color: white;
-      font-size: 14px;
-    }
-
-    .royal-chat-input input:focus {
-      outline: none;
-      border-color: #FFD700;
-      box-shadow: 0 0 30px rgba(255, 215, 0, 0.2);
-    }
-
-    .royal-chat-send {
-      width: 55px;
-      height: 55px;
-      background: linear-gradient(135deg, #FFD700, #FFA500);
-      border: none;
-      border-radius: 50%;
-      color: #000;
-      font-size: 22px;
-      cursor: pointer;
-      transition: 0.4s;
-    }
-
-    .royal-chat-send:hover {
-      transform: rotate(360deg) scale(1.1);
-    }
-
-    /* ==================== توست سلطنتی ==================== */
-    .royal-toast {
-      position: fixed;
-      top: 120px;
-      left: 50%;
-      transform: translateX(-50%) translateY(-100px);
-      background: rgba(3, 3, 4, 0.98);
-      backdrop-filter: blur(20px);
-      border: 1px solid #FFD700;
-      border-radius: 60px;
-      padding: 16px 35px;
-      color: #FFD700;
-      font-weight: 700;
-      z-index: 2000;
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      box-shadow: 0 0 50px rgba(255, 215, 0, 0.4);
-      transition: 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
-    }
-
-    .royal-toast.show {
-      transform: translateX(-50%) translateY(0);
-    }
-
-    /* ==================== انیمیشن‌های سلطنتی ==================== */
-    @keyframes crownFloat {
-      0%, 100% { transform: translateY(0); }
-      50% { transform: translateY(-10px); }
-    }
-
-    @keyframes goldShimmer {
-      0% { background-position: -200% 0; }
-      100% { background-position: 200% 0; }
-    }
-
-    .shimmer {
-      background: linear-gradient(90deg, transparent, rgba(255, 215, 0, 0.2), transparent);
-      background-size: 200% 100%;
-      animation: goldShimmer 3s infinite;
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ایتبال رویال</title>
+    <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;700;900&display=swap" rel="stylesheet">
+    
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Vazirmatn', sans-serif; }
+        
+        :root {
+            --gold: #FFD700;
+            --gold-30: rgba(255, 215, 0, 0.3);
+            --bg-primary: #0A0A0F;
+            --text-primary: #FFFFFF;
+            --text-secondary: #888888;
+            --error: #FF4444;
+            --success: #00FF88;
+        }
+        
+        body {
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            min-height: 100vh;
+        }
+        
+        #loading-screen {
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: var(--bg-primary);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            z-index: 99999;
+        }
+        
+        .loading-logo {
+            font-size: 4rem;
+            font-weight: 900;
+            color: var(--gold);
+            margin-bottom: 30px;
+        }
+        
+        .loading-spinner {
+            width: 50px;
+            height: 50px;
+            border: 4px solid var(--gold-30);
+            border-top-color: var(--gold);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+        
+        .loading-text {
+            margin-top: 20px;
+            color: var(--text-secondary);
+            font-size: 14px;
+        }
+        
+        .loading-error {
+            margin-top: 20px;
+            color: var(--error);
+            font-size: 12px;
+            max-width: 80%;
+            text-align: center;
+            line-height: 1.6;
+            display: none;
+        }
+        
+        .debug-info {
+            margin-top: 20px;
+            color: var(--text-secondary);
+            font-size: 11px;
+            max-width: 90%;
+            text-align: left;
+            background: rgba(0,0,0,0.5);
+            padding: 10px;
+            border-radius: 8px;
+            display: none;
+        }
+        
+        @keyframes spin { to { transform: rotate(360deg); } }
+    </style>
 </head>
 <body>
-  <!-- ==================== پس‌زمینه سینماتیک ==================== -->
-  <div class="royal-bg">
-    <div class="gold-dust"></div>
-    <div class="royal-particles"></div>
-  </div>
 
-  <!-- ==================== همبرگر کریستالی ==================== -->
-  <div class="crystal-hamburger" id="crystalHamburger">
-    <div class="crystal-line"></div>
-    <div class="crystal-line"></div>
-    <div class="crystal-line"></div>
-  </div>
-
-  <!-- ==================== سایدبار رویال ==================== -->
-  <div class="royal-sidebar" id="royalSidebar">
-    <div class="sidebar-crown">
-      <div class="crown-avatar">⚽</div>
-      <div class="sidebar-user-name">علی رضایی</div>
-      <div class="sidebar-user-title">
-        <span>👑 استاد تحلیل</span>
-        <span>🎯 ۳۱۲</span>
-      </div>
+    <div id="loading-screen">
+        <div class="loading-logo">👑 ایتبال</div>
+        <div class="loading-spinner" id="spinner"></div>
+        <div class="loading-text" id="statusText">در حال بارگذاری...</div>
+        <div class="loading-error" id="errorText"></div>
+        <div class="debug-info" id="debugInfo"></div>
     </div>
 
-    <div class="sidebar-menu-royal">
-      <a href="#" class="menu-item-royal" onclick="changePageRoyal('home', this); return false;">
-        <div class="menu-icon-royal">🏠</div>
-        <span class="menu-text-royal">تالار سلطنتی</span>
-      </a>
-      <a href="#" class="menu-item-royal" onclick="changePageRoyal('league', this); return false;">
-        <div class="menu-icon-royal">🏆</div>
-        <span class="menu-text-royal">لیگ برتر</span>
-        <span class="menu-badge-royal">LIVE</span>
-      </a>
-      <a href="#" class="menu-item-royal" onclick="changePageRoyal('matches', this); return false;">
-        <div class="menu-icon-royal">📅</div>
-        <span class="menu-text-royal">مسابقات</span>
-      </a>
-      <a href="#" class="menu-item-royal" onclick="changePageRoyal('news', this); return false;">
-        <div class="menu-icon-royal">📰</div>
-        <span class="menu-text-royal">اخبار رویال</span>
-        <span class="menu-badge-royal">۶+</span>
-      </a>
-      <a href="#" class="menu-item-royal" onclick="changePageRoyal('predict', this); return false;">
-        <div class="menu-icon-royal">🎯</div>
-        <span class="menu-text-royal">پیش‌بینی</span>
-      </a>
-      <a href="#" class="menu-item-royal" onclick="changePageRoyal('team', this); return false;">
-        <div class="menu-icon-royal">👥</div>
-        <span class="menu-text-royal">تیم رویال</span>
-      </a>
-      <a href="#" class="menu-item-royal" onclick="changePageRoyal('vote', this); return false;">
-        <div class="menu-icon-royal">⭐</div>
-        <span class="menu-text-royal">رأی‌گیری</span>
-      </a>
-      <a href="#" class="menu-item-royal" onclick="changePageRoyal('tap', this); return false;">
-        <div class="menu-icon-royal">👆</div>
-        <span class="menu-text-royal">تپ سلطنتی</span>
-      </a>
-      <a href="#" class="menu-item-royal" onclick="changePageRoyal('shop', this); return false;">
-        <div class="menu-icon-royal">🛒</div>
-        <span class="menu-text-royal">فروشگاه</span>
-      </a>
-      <a href="#" class="menu-item-royal" onclick="changePageRoyal('chat', this); return false;">
-        <div class="menu-icon-royal">💬</div>
-        <span class="menu-text-royal">چت سلطنتی</span>
-      </a>
-    </div>
-  </div>
+    <div id="app"></div>
 
-  <!-- ==================== اورلی طلایی ==================== -->
-  <div class="golden-overlay" id="goldenOverlay" onclick="closeSidebarRoyal()"></div>
+    <script>
+        // Debug logger
+        function log(msg) {
+            console.log(msg);
+            const debug = document.getElementById('debugInfo');
+            debug.style.display = 'block';
+            debug.innerHTML += msg + '<br>';
+        }
 
-  <!-- ==================== هدر سلطنتی ==================== -->
-  <header class="royal-header">
-    <div class="royal-logo">
-      <div class="logo-crown">👑</div>
-      <div class="logo-text">
-        EITABAL
-        <span>رویال</span>
-      </div>
-    </div>
-    <div class="royal-streak" onclick="showRoyalToast('🔥 حضور پیوسته: ۱۲ روز طلایی')">
-      <span class="streak-crown">👑</span>
-      <span class="streak-number">۱۲</span>
-      <span style="color: #FFD700; font-size: 14px;">روز</span>
-    </div>
-  </header>
+        function showError(msg) {
+            document.getElementById('spinner').style.display = 'none';
+            document.getElementById('statusText').style.display = 'none';
+            document.getElementById('errorText').style.display = 'block';
+            document.getElementById('errorText').textContent = msg;
+            log('ERROR: ' + msg);
+        }
 
-  <!-- ==================== محتوای اصلی رویال ==================== -->
-  <main class="royal-main" id="royalMain">
-    <!-- همه صفحات (home, league, matches, news, predict, team, vote, tap, shop, chat) رو دقیقاً مثل کد کاربر کپی کردم -->
-    <!-- (برای کوتاه کردن پاسخ، اینجا خلاصه کردم اما تو کد واقعی کامل باشه) -->
+        function updateStatus(msg) {
+            document.getElementById('statusText').textContent = msg;
+            log(msg);
+        }
 
-    <!-- صفحه خانه سلطنتی -->
-    <div id="homeRoyalPage" class="royal-page active">
-      <!-- محتوای خانه مثل کارت خوش‌آمدگویی، اخبار، صدرنشین -->
-    </div>
+        // Check auth
+        function checkAuth() {
+            const testUser = localStorage.getItem('eitabal_user');
+            log('checkAuth: testUser=' + (testUser ? 'exists' : 'null'));
+            return testUser;
+        }
 
-    <!-- بقیه صفحات (league, matches, news, predict, team, vote, tap, shop, chat) -->
+        // Load script with detailed error
+        function loadScript(src) {
+            return new Promise((resolve, reject) => {
+                log('Loading: ' + src);
+                const script = document.createElement('script');
+                script.src = src;
+                script.async = false; // Load sequentially
+                
+                script.onload = () => {
+                    log('✅ Loaded: ' + src);
+                    resolve();
+                };
+                
+                script.onerror = (e) => {
+                    log('❌ Failed: ' + src);
+                    reject(new Error('Failed to load: ' + src));
+                };
+                
+                document.head.appendChild(script);
+            });
+        }
 
-  </main>
+        // Initialize
+        async function initApp() {
+            log('=== Starting App ===');
+            
+            if (!checkAuth()) {
+                log('No auth, redirecting...');
+                window.location.href = './index.html';
+                return;
+            }
 
-  <!-- منوی پایین و منوی اضافی و اسکریپت‌ها -->
+            try {
+                // Load CSS
+                updateStatus('Loading CSS...');
+                const css1 = document.createElement('link');
+                css1.rel = 'stylesheet';
+                css1.href = '02-style.css';
+                document.head.appendChild(css1);
 
-  <script>
-    // تمام اسکریپت سلطنتی (متغیرها، توابع، window.onload و ...) دقیقاً مثل کد کاربر
-  </script>
+                const css2 = document.createElement('link');
+                css2.rel = 'stylesheet';
+                css2.href = '03-variables.css';
+                document.head.appendChild(css2);
+
+                // Load Core
+                updateStatus('Loading Core...');
+                await loadScript('core/04-engine.js');
+                
+                // Check if Royal exists
+                log('Checking Royal...');
+                if (typeof Royal === 'undefined') {
+                    throw new Error('Royal is undefined after loading 04-engine.js');
+                }
+                log('Royal found: ' + typeof Royal);
+                log('Royal.init: ' + typeof Royal.init);
+
+                await loadScript('core/05-router.js');
+                await loadScript('core/06-events.js');
+                await loadScript('core/07-utils.js');
+                await loadScript('core/08-http.js');
+                await loadScript('core/09-database.js');
+
+                // Load Modules
+                updateStatus('Loading Modules...');
+                await loadScript('modules/10-auth.js');
+                await loadScript('modules/11-header.js');
+                await loadScript('modules/12-sidebar.js');
+                await loadScript('modules/13-bottom-nav.js');
+                await loadScript('modules/14-extra-menu.js');
+                await loadScript('modules/15-streak.js');
+                await loadScript('modules/16-predict.js');
+                await loadScript('modules/17-team.js');
+                await loadScript('modules/18-vote.js');
+                await loadScript('modules/19-tap.js');
+                await loadScript('modules/20-shop.js');
+                await loadScript('modules/21-chat.js');
+                await loadScript('modules/22-league.js');
+                await loadScript('modules/23-news.js');
+                await loadScript('modules/24-payment.js');
+
+                // Load Pages
+                updateStatus('Loading Pages...');
+                await loadScript('pages/25-home.js');
+                await loadScript('pages/26-league-page.js');
+                await loadScript('pages/27-matches-page.js');
+                await loadScript('pages/28-news-page.js');
+                await loadScript('pages/29-predict-page.js');
+                await loadScript('pages/30-team-page.js');
+                await loadScript('pages/31-vote-page.js');
+                await loadScript('pages/32-tap-page.js');
+                await loadScript('pages/33-shop-page.js');
+                await loadScript('pages/34-chat-page.js');
+
+                // Initialize
+                updateStatus('Initializing Royal...');
+                if (Royal && Royal.init) {
+                    await Royal.init();
+                    log('✅ Royal initialized');
+                    
+                    setTimeout(() => {
+                        document.getElementById('loading-screen').style.opacity = '0';
+                        setTimeout(() => {
+                            document.getElementById('loading-screen').style.display = 'none';
+                        }, 500);
+                    }, 500);
+                } else {
+                    throw new Error('Royal.init not found');
+                }
+
+            } catch (error) {
+                console.error(error);
+                showError('خطا: ' + error.message);
+            }
+        }
+
+        // Start
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', initApp);
+        } else {
+            initApp();
+        }
+    </script>
+
 </body>
 </html>
