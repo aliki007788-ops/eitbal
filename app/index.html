@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="theme-color" content="#0A0A0F">
+    <title>ایتبال رویال</title>
+    
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;700;900&display=swap" rel="stylesheet">
+    
+    <!-- Styles -->
+    <link rel="stylesheet" href="03-variables.css">
+    <link rel="stylesheet" href="02-style.css">
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Vazirmatn', 'Segoe UI', sans-serif;
+        }
+        
+        body {
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            overflow-x: hidden;
+            min-height: 100vh;
+            -webkit-tap-highlight-color: transparent;
+        }
+        
+        #app {
+            max-width: 500px;
+            margin: 0 auto;
+            position: relative;
+            min-height: 100vh;
+            padding-bottom: 100px;
+        }
+        
+        /* Loading Screen */
+        #loading-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: var(--bg-primary);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            z-index: 99999;
+            transition: opacity 0.5s ease;
+        }
+        
+        #loading-screen.hidden {
+            opacity: 0;
+            pointer-events: none;
+        }
+        
+        .loading-logo {
+            font-size: 4rem;
+            font-weight: 900;
+            background: linear-gradient(to bottom, var(--gold), var(--gold-dark));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            margin-bottom: 30px;
+            animation: pulse 2s infinite;
+        }
+        
+        .loading-spinner {
+            width: 50px;
+            height: 50px;
+            border: 4px solid var(--gold-30);
+            border-top-color: var(--gold);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+        
+        .loading-text {
+            margin-top: 20px;
+            color: var(--text-secondary);
+            font-size: 14px;
+        }
+        
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+        
+        @keyframes pulse {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.8; transform: scale(0.95); }
+        }
+        
+        /* Auth Check Failed */
+        #auth-failed {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: var(--bg-primary);
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            z-index: 99998;
+            padding: 40px;
+            text-align: center;
+        }
+        
+        #auth-failed.active {
+            display: flex;
+        }
+        
+        .auth-failed-icon {
+            font-size: 80px;
+            margin-bottom: 20px;
+        }
+        
+        .auth-failed-title {
+            color: var(--gold);
+            font-size: 24px;
+            font-weight: 900;
+            margin-bottom: 16px;
+        }
+        
+        .auth-failed-text {
+            color: var(--text-secondary);
+            margin-bottom: 30px;
+            line-height: 1.8;
+        }
+        
+        /* Buttons */
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            padding: 12px 24px;
+            background: linear-gradient(135deg, var(--gold), var(--gold-dark));
+            border: none;
+            border-radius: 50px;
+            color: var(--bg-primary);
+            font-weight: 700;
+            cursor: pointer;
+            transition: var(--transition-normal);
+        }
+        
+        .btn:hover {
+            transform: scale(1.05);
+            box-shadow: var(--shadow-gold);
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Loading Screen -->
+    <div id="loading-screen">
+        <div class="loading-logo">👑 ایتبال</div>
+        <div class="loading-spinner"></div>
+        <div class="loading-text">در حال بارگذاری...</div>
+    </div>
+
+    <!-- Auth Failed Screen -->
+    <div id="auth-failed">
+        <div class="auth-failed-icon">🔐</div>
+        <div class="auth-failed-title">دسترسی غیرمجاز</div>
+        <div class="auth-failed-text">
+            لطفاً ابتدا از صفحه ورود وارد شوید
+        </div>
+        <button class="btn" onclick="window.location.href='index.html'" style="padding: 16px 40px;">
+            رفتن به صفحه ورود
+        </button>
+    </div>
+
+    <!-- Main App Container -->
+    <div id="app"></div>
+
+    <!-- ========== CORE MODULES ========== -->
+    <script src="04-engine.js"></script>
+    <script src="05-router.js"></script>
+    <script src="06-events.js"></script>
+    <script src="07-utils.js"></script>
+    <script src="08-http.js"></script>
+    <script src="09-database.js"></script>
+
+    <!-- ========== UI MODULES ========== -->
+    <script src="10-auth.js"></script>
+    <script src="11-header.js"></script>
+    <script src="12-sidebar.js"></script>
+    <script src="13-bottom-nav.js"></script>
+    <script src="14-extra-menu.js"></script>
+
+    <!-- ========== FEATURE MODULES ========== -->
+    <script src="15-streak.js"></script>
+    <script src="16-predict.js"></script>
+    <script src="17-team.js"></script>
+    <script src="18-vote.js"></script>
+    <script src="19-tap.js"></script>
+    <script src="20-shop.js"></script>
+    <script src="21-chat.js"></script>
+    <script src="22-league.js"></script>
+    <script src="23-news.js"></script>
+    <script src="24-payment.js"></script>
+
+    <!-- ========== PAGES ========== -->
+    <script src="25-home.js"></script>
+    <script src="26-league-page.js"></script>
+    <script src="27-matches-page.js"></script>
+    <script src="28-news-page.js"></script>
+    <script src="29-predict-page.js"></script>
+    <script src="30-team-page.js"></script>
+    <script src="31-vote-page.js"></script>
+    <script src="32-tap-page.js"></script>
+    <script src="33-shop-page.js"></script>
+    <script src="34-chat-page.js"></script>
+
+    <!-- ========== APP INITIALIZER ========== -->
+    <script>
+        // Check if user is authenticated
+        function checkAuth() {
+            const testUser = localStorage.getItem('eitabal_user');
+            const royalStore = localStorage.getItem('royal_store');
+            
+            // Allow if either test user exists or has royal store data
+            return testUser || (royalStore && JSON.parse(royalStore).user?.id);
+        }
+
+        // Initialize Application
+        async function initApp() {
+            // Check authentication first
+            if (!checkAuth()) {
+                document.getElementById('loading-screen').classList.add('hidden');
+                document.getElementById('auth-failed').classList.add('active');
+                return;
+            }
+
+            try {
+                // Initialize Royal Engine
+                if (typeof Royal !== 'undefined' && Royal.init) {
+                    await Royal.init();
+                    console.log('✅ App initialized successfully');
+                    
+                    // Hide loading screen
+                    setTimeout(() => {
+                        document.getElementById('loading-screen').classList.add('hidden');
+                    }, 500);
+                } else {
+                    throw new Error('Royal Engine not loaded');
+                }
+            } catch (error) {
+                console.error('❌ App initialization failed:', error);
+                document.querySelector('.loading-text').textContent = 'خطا در بارگذاری!';
+                document.querySelector('.loading-text').style.color = 'var(--error)';
+            }
+        }
+
+        // Start app when DOM is ready
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', initApp);
+        } else {
+            initApp();
+        }
+
+        // Prevent going back to login with back button
+        history.pushState(null, null, location.href);
+        window.onpopstate = function () {
+            history.go(1);
+        };
+    </script>
+
+</body>
+</html>
