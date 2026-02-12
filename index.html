@@ -1,76 +1,540 @@
+
+
 <!DOCTYPE html>
-<html lang="fa" dir="rtl">
+<html lang="fa">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <meta name="theme-color" content="#0a0a0f">
-  <meta name="apple-mobile-web-app-capable" content="yes">
-  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-  
-  <title>ایتبال رویال | فوتبال فانتزی ایران</title>
-  
-  <!-- PWA Manifest -->
-  <link rel="manifest" href="/manifest.json">
-  <link rel="apple-touch-icon" href="/icons/icon-192.png">
-  
-  <!-- Eitaa SDK -->
-  <script src="https://developer.eitaa.com/eitaa-web-app.js"></script>
-  
-  <!-- Firebase SDK -->
-  <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-database-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-auth-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
-  
-  <!-- Styles -->
-  <link rel="stylesheet" href="02-style.css">
-  <link rel="stylesheet" href="03-variables.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EITBAL - Iranian Soccer Interface</title>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            direction: rtl;
+            font-family: 'Orbitron', sans-serif;
+            background-color: #000;
+            color: #FFD700;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+            position: relative;
+        }
+
+        /* ===== ذرات درخشان سراسری ===== */
+        .particles-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+            pointer-events: none;
+        }
+
+        .particle {
+            position: absolute;
+            bottom: -20px;
+            border-radius: 50%;
+            opacity: 0;
+            animation: rise-and-fade linear infinite;
+        }
+
+        .particle.gold { background: #FFD700; box-shadow: 0 0 10px #FFD700; }
+        .particle.white { background: #FFFFFF; box-shadow: 0 0 10px #FFFFFF; }
+
+        @keyframes rise-and-fade {
+            0% { transform: translateY(0) scale(0.3); opacity: 0; }
+            15% { opacity: 0.8; }
+            85% { opacity: 0.8; }
+            100% { transform: translateY(-115vh) scale(1.2); opacity: 0; }
+        }
+
+        /* ===== توپ فوتبال با لبه‌های کاملاً محو ===== */
+        .ball-wrapper {
+            position: relative;
+            width: 620px;
+            height: 620px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 10;
+        }
+
+        .glass-ball {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            background: rgba(10, 10, 10, 0.7);
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120' viewBox='0 0 100 100'%3E%3Cpath d='M50 0 L93.3 25 L93.3 75 L50 100 L6.7 75 L6.7 25 Z' fill='none' stroke='rgba(255, 215, 0, 0.15)' stroke-width='1'/%3E%3C/svg%3E");
+            background-size: 140px 140px;
+            -webkit-mask-image: radial-gradient(circle, black 35%, transparent 95%);
+            mask-image: radial-gradient(circle, black 35%, transparent 95%);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 215, 0, 0.2);
+            box-shadow: 0 0 80px rgba(0, 0, 0, 0.8);
+        }
+
+        /* ===== محتوا ===== */
+        .content {
+            position: relative;
+            z-index: 20;
+            text-align: center;
+            width: 100%;
+            max-width: 380px;
+        }
+
+        .logo {
+            font-size: 4.2rem;
+            font-weight: 800;
+            margin-bottom: 30px;
+            background: linear-gradient(to bottom, #FFD700, #FFF, #FFD700);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            filter: drop-shadow(0 0 15px rgba(255, 215, 0, 0.5));
+        }
+
+        /* فیلد شماره موبایل ایران */
+        .input-box {
+            position: relative;
+            margin-bottom: 25px;
+        }
+
+        .input-box span.prefix {
+            position: absolute;
+            left: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: rgba(255, 215, 0, 0.6);
+            font-size: 1.1rem;
+            font-weight: bold;
+            border-right: 1px solid rgba(255, 215, 0, 0.2);
+            padding-right: 10px;
+            z-index: 5;
+        }
+
+        .input-box .flag-icon {
+            position: absolute;
+            right: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 1.5rem;
+            z-index: 5;
+        }
+
+        input[type="tel"], input[type="text"] {
+            width: 100%;
+            padding: 20px 60px 20px 85px;
+            border-radius: 40px;
+            background: rgba(0, 0, 0, 0.8);
+            border: 1px solid rgba(255, 215, 0, 0.3);
+            color: #FFD700;
+            font-size: 1.3rem;
+            outline: none;
+            text-align: left;
+            letter-spacing: 2px;
+        }
+
+        /* رفع مشکل وارد کردن عدد - حذف readonly */
+        input[type="tel"]:focus,
+        input[type="text"]:focus {
+            background: rgba(0, 0, 0, 0.9);
+            border-color: rgba(255, 215, 0, 0.6);
+        }
+
+        /* فیلد کد تأیید */
+        .verification-box {
+            position: relative;
+            margin-bottom: 25px;
+            display: none;
+        }
+
+        .verification-box.active {
+            display: block;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .verification-box .code-icon {
+            position: absolute;
+            right: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 1.5rem;
+            z-index: 5;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .gender-options {
+            display: flex;
+            justify-content: center;
+            gap: 45px;
+            margin-bottom: 35px;
+        }
+
+        .gender-option { 
+            font-size: 2.8rem; 
+            cursor: pointer; 
+            opacity: 0.3; 
+            transition: 0.4s; 
+        }
+        .gender-option.active { 
+            opacity: 1; 
+            transform: scale(1.3); 
+            text-shadow: 0 0 25px #FFD700; 
+        }
+
+        /* دکمه اصلی */
+        .main-btn {
+            width: 100%;
+            padding: 22px;
+            border-radius: 45px;
+            background: linear-gradient(45deg, #FFD700, #FFA500);
+            border: none;
+            color: #000;
+            font-weight: 800;
+            font-size: 1.4rem;
+            cursor: pointer;
+            box-shadow: 0 0 35px rgba(255, 215, 0, 0.5);
+            margin-bottom: 15px;
+            transition: 0.3s;
+        }
+
+        .main-btn:hover {
+            transform: scale(1.02);
+            box-shadow: 0 0 50px rgba(255, 215, 0, 0.8);
+        }
+
+        /* دکمه‌های زیرین */
+        .mode-switch {
+            display: flex;
+            justify-content: center;
+            gap: 50px;
+        }
+
+        .mode-btn {
+            font-size: 1.1rem;
+            color: #FFD700;
+            opacity: 0.4;
+            cursor: pointer;
+            transition: 0.3s;
+            border-bottom: 2px solid transparent;
+            padding-bottom: 5px;
+        }
+
+        .mode-btn.active {
+            opacity: 1;
+            border-bottom: 2px solid #FFD700;
+            text-shadow: 0 0 10px #FFD700;
+        }
+
+        .resend-code {
+            margin-top: 10px;
+            font-size: 0.9rem;
+            color: rgba(255, 215, 0, 0.6);
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .resend-code:hover {
+            color: #FFD700;
+            text-shadow: 0 0 10px #FFD700;
+        }
+
+        .timer {
+            color: rgba(255, 255, 255, 0.5);
+            font-size: 0.9rem;
+            margin-right: 5px;
+        }
+
+        /* دکمه شماره تست */
+        .test-account {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 15px;
+        }
+
+        .test-btn {
+            background: rgba(255, 215, 0, 0.1);
+            border: 1px solid rgba(255, 215, 0, 0.3);
+            color: #FFD700;
+            padding: 10px 25px;
+            border-radius: 40px;
+            font-size: 1rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .test-btn:hover {
+            background: rgba(255, 215, 0, 0.2);
+            border-color: #FFD700;
+            transform: scale(1.05);
+            box-shadow: 0 0 20px rgba(255, 215, 0, 0.3);
+        }
+    </style>
 </head>
 <body>
-  <div id="app" class="royal-app"></div>
-  
-  <!-- Core Engine -->
-  <script src="core/04-engine.js"></script>
-  <script src="core/05-router.js"></script>
-  <script src="core/06-events.js"></script>
-  <script src="core/07-utils.js"></script>
-  <script src="core/08-http.js"></script>
-  <script src="core/09-database.js"></script>
-  
-  <!-- Modules -->
-  <script src="modules/10-auth.js"></script>
-  <script src="modules/11-header.js"></script>
-  <script src="modules/12-sidebar.js"></script>
-  <script src="modules/13-bottom-nav.js"></script>
-  <script src="modules/14-extra-menu.js"></script>
-  <script src="modules/15-streak.js"></script>
-  <script src="modules/16-predict.js"></script>
-  <script src="modules/17-team.js"></script>
-  <script src="modules/18-vote.js"></script>
-  <script src="modules/19-tap.js"></script>
-  <script src="modules/20-shop.js"></script>
-  <script src="modules/21-chat.js"></script>
-  <script src="modules/22-league.js"></script>
-  <script src="modules/23-news.js"></script>
-  <script src="modules/24-payment.js"></script>
-  
-  <!-- Pages -->
-  <script src="pages/25-home.js"></script>
-  <script src="pages/26-league-page.js"></script>
-  <script src="pages/27-matches-page.js"></script>
-  <script src="pages/28-news-page.js"></script>
-  <script src="pages/29-predict-page.js"></script>
-  <script src="pages/30-team-page.js"></script>
-  <script src="pages/31-vote-page.js"></script>
-  <script src="pages/32-tap-page.js"></script>
-  <script src="pages/33-shop-page.js"></script>
-  <script src="pages/34-chat-page.js"></script>
-  
-  <!-- Initialize App -->
-  <script>
-    document.addEventListener('DOMContentLoaded', () => {
-      Royal.init();
+
+<div class="particles-container" id="particles"></div>
+
+<div class="ball-wrapper">
+    <div class="glass-ball"></div>
+    
+    <div class="content">
+        <h1 class="logo">EITBAL</h1>
+        
+        <!-- فیلد شماره موبایل ایران - کاملاً قابل تایپ -->
+        <div class="input-box">
+            <span class="flag-icon">🇮🇷</span>
+            <span class="prefix">+98</span>
+            <input type="tel" 
+                   id="phone" 
+                   placeholder="9123456789" 
+                   maxlength="10" 
+                   inputmode="numeric"
+                   autocomplete="off">
+        </div>
+
+        <!-- دکمه شماره تست -->
+        <div class="test-account">
+            <button class="test-btn" onclick="fillTestNumber()">
+                <span>🧪</span>
+                <span>شماره تست: 9120000000</span>
+            </button>
+        </div>
+
+        <!-- فیلد کد تأیید -->
+        <div class="verification-box" id="verificationBox">
+            <span class="code-icon">🔑</span>
+            <input type="text" 
+                   id="verifyCode" 
+                   placeholder="کد تأیید ۴ رقمی" 
+                   maxlength="4" 
+                   inputmode="numeric"
+                   autocomplete="off">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 8px;">
+                <span class="resend-code" onclick="resendCode()">ارسال مجدد کد</span>
+                <span class="timer" id="timerText">00:30</span>
+            </div>
+        </div>
+
+        <div class="gender-options">
+            <div class="gender-option active" onclick="setGender(this)">👨</div>
+            <div class="gender-option" onclick="setGender(this)">👩</div>
+        </div>
+
+        <button class="main-btn" id="main-submit" onclick="handleSubmit()">⚽ ورود</button>
+
+        <div class="mode-switch">
+            <div class="mode-btn active" id="btn-login" onclick="setMode('login')">ورود</div>
+            <div class="mode-btn" id="btn-register" onclick="setMode('register')">ثبت‌نام</div>
+        </div>
+    </div>
+</div>
+
+<script>
+    // === سیستم ذرات سراسری ===
+    const container = document.getElementById('particles');
+    const particleCount = 1000;
+
+    function createParticle() {
+        const p = document.createElement('div');
+        const isGold = Math.random() > 0.4;
+        p.className = `particle ${isGold ? 'gold' : 'white'}`;
+        
+        const size = Math.random() * 3 + 1;
+        p.style.width = size + 'px';
+        p.style.height = size + 'px';
+        p.style.left = Math.random() * 100 + '%';
+        
+        const duration = Math.random() * 6 + 4;
+        p.style.animationDuration = duration + 's';
+        p.style.animationDelay = -(Math.random() * 10) + 's';
+        
+        container.appendChild(p);
+    }
+
+    for (let i = 0; i < particleCount; i++) {
+        createParticle();
+    }
+
+    // === شماره تست اختصاصی ===
+    const TEST_PHONE_NUMBER = "9120000000";
+
+    // === پر کردن شماره تست ===
+    function fillTestNumber() {
+        const phoneInput = document.getElementById('phone');
+        phoneInput.value = TEST_PHONE_NUMBER;
+        showMessage('✅ شماره تست وارد شد', 'success');
+    }
+
+    // === نمایش پیام موقت ===
+    function showMessage(msg, type = 'success') {
+        const toast = document.createElement('div');
+        toast.style.cssText = `
+            position: fixed;
+            top: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(0, 0, 0, 0.9);
+            border: 1px solid ${type === 'success' ? '#FFD700' : '#FF4444'};
+            border-radius: 50px;
+            padding: 15px 30px;
+            color: ${type === 'success' ? '#FFD700' : '#FF4444'};
+            font-size: 1rem;
+            z-index: 10000;
+            backdrop-filter: blur(10px);
+            animation: slideDown 0.3s ease;
+        `;
+        toast.textContent = msg;
+        document.body.appendChild(toast);
+        
+        setTimeout(() => {
+            toast.style.animation = 'slideUp 0.3s ease';
+            setTimeout(() => toast.remove(), 300);
+        }, 2500);
+    }
+
+    // === محدود کردن ورودی به اعداد ===
+    document.getElementById('phone').addEventListener('input', function (e) {
+        // فقط اعداد مجاز هستند
+        this.value = this.value.replace(/[^0-9]/g, '');
+        if (this.value.length > 10) this.value = this.value.slice(0, 10);
     });
-  </script>
+
+    // === مدیریت فیلد کد تأیید ===
+    const verifyCodeInput = document.getElementById('verifyCode');
+    if (verifyCodeInput) {
+        verifyCodeInput.addEventListener('input', function (e) {
+            this.value = this.value.replace(/[^0-9]/g, '');
+            if (this.value.length > 4) this.value = this.value.slice(0, 4);
+        });
+    }
+
+    // === متغیرهای وضعیت ===
+    let currentMode = 'login';
+    let timerInterval;
+    let timeLeft = 30;
+
+    // === مدیریت حالت ورود و ثبت‌نام ===
+    function setMode(mode) {
+        currentMode = mode;
+        const mainBtn = document.getElementById('main-submit');
+        const btnLogin = document.getElementById('btn-login');
+        const btnRegister = document.getElementById('btn-register');
+        const verificationBox = document.getElementById('verificationBox');
+
+        if (mode === 'login') {
+            mainBtn.innerHTML = '⚽ ورود';
+            btnLogin.classList.add('active');
+            btnRegister.classList.remove('active');
+            verificationBox.classList.remove('active');
+            clearTimer();
+        } else {
+            mainBtn.innerHTML = '📝 ثبت‌نام';
+            btnRegister.classList.add('active');
+            btnLogin.classList.remove('active');
+            verificationBox.classList.add('active');
+            startTimer();
+        }
+    }
+
+    // === مدیریت انتخاب جنسیت ===
+    function setGender(el) {
+        document.querySelectorAll('.gender-option').forEach(opt => opt.classList.remove('active'));
+        el.classList.add('active');
+    }
+
+    // === مدیریت ارسال فرم ===
+    function handleSubmit() {
+        const phone = document.getElementById('phone').value;
+        const gender = document.querySelector('.gender-option.active')?.innerHTML || '👨';
+        const verifyCode = document.getElementById('verifyCode')?.value || '';
+
+        if (!phone || phone.length < 10) {
+            showMessage('❌ لطفاً شماره موبایل را وارد کنید', 'error');
+            return;
+        }
+
+        // بررسی شماره تست
+        if (phone !== TEST_PHONE_NUMBER) {
+            showMessage('❌ فقط شماره تست 9120000000 قابل قبول است', 'error');
+            return;
+        }
+
+        if (currentMode === 'login') {
+            showMessage(`✅ کد ورود به شماره ۰۹۸${phone} ارسال شد`, 'success');
+        } else {
+            if (!verifyCode || verifyCode.length < 4) {
+                showMessage('❌ لطفاً کد تأیید ۴ رقمی را وارد کنید', 'error');
+                return;
+            }
+            showMessage(`✅ ثبت‌نام شما با موفقیت انجام شد`, 'success');
+        }
+    }
+
+    // === تایمر برای کد تأیید ===
+    function startTimer() {
+        clearInterval(timerInterval);
+        timeLeft = 30;
+        updateTimerText();
+        
+        timerInterval = setInterval(() => {
+            timeLeft--;
+            updateTimerText();
+            
+            if (timeLeft <= 0) {
+                clearInterval(timerInterval);
+                document.getElementById('timerText').innerHTML = '۰۰:۰۰';
+            }
+        }, 1000);
+    }
+
+    function updateTimerText() {
+        const minutes = Math.floor(timeLeft / 60);
+        const seconds = timeLeft % 60;
+        document.getElementById('timerText').innerHTML = 
+            `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+    }
+
+    function clearTimer() {
+        clearInterval(timerInterval);
+        document.getElementById('timerText').innerHTML = '۰۰:۳۰';
+    }
+
+    function resendCode() {
+        showMessage('✅ کد تأیید جدید ارسال شد', 'success');
+        startTimer();
+    }
+
+    // === تنظیم اولیه ===
+    window.onload = function() {
+        document.getElementById('phone').value = '';
+        if (verifyCodeInput) verifyCodeInput.value = '';
+    };
+</script>
+
+<style>
+    @keyframes slideDown {
+        from { opacity: 0; transform: translateX(-50%) translateY(-50px); }
+        to { opacity: 1; transform: translateX(-50%) translateY(0); }
+    }
+    @keyframes slideUp {
+        from { opacity: 1; transform: translateX(-50%) translateY(0); }
+        to { opacity: 0; transform: translateX(-50%) translateY(-50px); }
+    }
+</style>
+
 </body>
 </html>
