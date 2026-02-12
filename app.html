@@ -2,76 +2,45 @@
 <html lang="fa" dir="rtl">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <meta name="theme-color" content="#0A0A0F">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ایتبال رویال</title>
-    
-    <!-- Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;700;900&display=swap" rel="stylesheet">
     
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Vazirmatn', 'Segoe UI', sans-serif;
-        }
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Vazirmatn', sans-serif; }
         
         :root {
             --gold: #FFD700;
-            --gold-dark: #FFAA00;
             --gold-30: rgba(255, 215, 0, 0.3);
             --bg-primary: #0A0A0F;
             --text-primary: #FFFFFF;
             --text-secondary: #888888;
             --error: #FF4444;
+            --success: #00FF88;
         }
         
         body {
             background: var(--bg-primary);
             color: var(--text-primary);
-            overflow-x: hidden;
             min-height: 100vh;
         }
         
-        #app {
-            max-width: 500px;
-            margin: 0 auto;
-            position: relative;
-            min-height: 100vh;
-            padding-bottom: 100px;
-        }
-        
-        /* Loading Screen */
         #loading-screen {
             position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
+            top: 0; left: 0; right: 0; bottom: 0;
             background: var(--bg-primary);
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
             z-index: 99999;
-            transition: opacity 0.5s ease;
-        }
-        
-        #loading-screen.hidden {
-            opacity: 0;
-            pointer-events: none;
         }
         
         .loading-logo {
             font-size: 4rem;
             font-weight: 900;
-            background: linear-gradient(to bottom, var(--gold), var(--gold-dark));
-            -webkit-background-clip: text;
-            background-clip: text;
-            color: transparent;
+            color: var(--gold);
             margin-bottom: 30px;
-            animation: pulse 2s infinite;
         }
         
         .loading-spinner {
@@ -92,181 +61,139 @@
         .loading-error {
             margin-top: 20px;
             color: var(--error);
-            font-size: 14px;
-            display: none;
+            font-size: 12px;
             max-width: 80%;
             text-align: center;
             line-height: 1.6;
-        }
-        
-        @keyframes spin {
-            to { transform: rotate(360deg); }
-        }
-        
-        @keyframes pulse {
-            0%, 100% { opacity: 1; transform: scale(1); }
-            50% { opacity: 0.8; transform: scale(0.95); }
-        }
-        
-        /* Auth Failed Screen */
-        #auth-failed {
             display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: var(--bg-primary);
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            z-index: 99998;
-            padding: 40px;
-            text-align: center;
         }
         
-        #auth-failed.active {
-            display: flex;
-        }
-        
-        .auth-failed-icon {
-            font-size: 80px;
-            margin-bottom: 20px;
-        }
-        
-        .auth-failed-title {
-            color: var(--gold);
-            font-size: 24px;
-            font-weight: 900;
-            margin-bottom: 16px;
-        }
-        
-        .auth-failed-text {
+        .debug-info {
+            margin-top: 20px;
             color: var(--text-secondary);
-            margin-bottom: 30px;
-            line-height: 1.8;
+            font-size: 11px;
+            max-width: 90%;
+            text-align: left;
+            background: rgba(0,0,0,0.5);
+            padding: 10px;
+            border-radius: 8px;
+            display: none;
         }
         
-        /* Buttons */
-        .btn {
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
-            padding: 12px 24px;
-            background: linear-gradient(135deg, var(--gold), var(--gold-dark));
-            border: none;
-            border-radius: 50px;
-            color: var(--bg-primary);
-            font-weight: 700;
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-        
-        .btn:hover {
-            transform: scale(1.05);
-            box-shadow: 0 0 30px rgba(255, 215, 0, 0.3);
-        }
+        @keyframes spin { to { transform: rotate(360deg); } }
     </style>
 </head>
 <body>
 
-    <!-- Loading Screen -->
     <div id="loading-screen">
         <div class="loading-logo">👑 ایتبال</div>
-        <div class="loading-spinner"></div>
-        <div class="loading-text">در حال بارگذاری...</div>
+        <div class="loading-spinner" id="spinner"></div>
+        <div class="loading-text" id="statusText">در حال بارگذاری...</div>
         <div class="loading-error" id="errorText"></div>
+        <div class="debug-info" id="debugInfo"></div>
     </div>
 
-    <!-- Auth Failed Screen -->
-    <div id="auth-failed">
-        <div class="auth-failed-icon">🔐</div>
-        <div class="auth-failed-title">دسترسی غیرمجاز</div>
-        <div class="auth-failed-text">
-            لطفاً ابتدا از صفحه ورود وارد شوید
-        </div>
-        <button class="btn" onclick="window.location.href='./index.html'" style="padding: 16px 40px;">
-            رفتن به صفحه ورود
-        </button>
-    </div>
-
-    <!-- Main App Container -->
     <div id="app"></div>
 
-    <!-- ========== APP INITIALIZER ========== -->
     <script>
-        // Check if user is authenticated
+        // Debug logger
+        function log(msg) {
+            console.log(msg);
+            const debug = document.getElementById('debugInfo');
+            debug.style.display = 'block';
+            debug.innerHTML += msg + '<br>';
+        }
+
+        function showError(msg) {
+            document.getElementById('spinner').style.display = 'none';
+            document.getElementById('statusText').style.display = 'none';
+            document.getElementById('errorText').style.display = 'block';
+            document.getElementById('errorText').textContent = msg;
+            log('ERROR: ' + msg);
+        }
+
+        function updateStatus(msg) {
+            document.getElementById('statusText').textContent = msg;
+            log(msg);
+        }
+
+        // Check auth
         function checkAuth() {
             const testUser = localStorage.getItem('eitabal_user');
-            const royalStore = localStorage.getItem('royal_store');
-            return testUser || (royalStore && JSON.parse(royalStore).user?.id);
+            log('checkAuth: testUser=' + (testUser ? 'exists' : 'null'));
+            return testUser;
         }
 
-        // Show error
-        function showError(msg) {
-            document.querySelector('.loading-spinner').style.display = 'none';
-            document.querySelector('.loading-text').style.display = 'none';
-            const errorDiv = document.getElementById('errorText');
-            errorDiv.style.display = 'block';
-            errorDiv.textContent = msg;
-            console.error(msg);
-        }
-
-        // Load script with retry
+        // Load script with detailed error
         function loadScript(src) {
             return new Promise((resolve, reject) => {
+                log('Loading: ' + src);
                 const script = document.createElement('script');
                 script.src = src;
+                script.async = false; // Load sequentially
+                
                 script.onload = () => {
-                    console.log('✅ Loaded:', src);
+                    log('✅ Loaded: ' + src);
                     resolve();
                 };
-                script.onerror = () => {
-                    console.error('❌ Failed:', src);
+                
+                script.onerror = (e) => {
+                    log('❌ Failed: ' + src);
                     reject(new Error('Failed to load: ' + src));
                 };
+                
                 document.head.appendChild(script);
             });
         }
 
-        // Initialize Application
+        // Initialize
         async function initApp() {
-            // Check authentication first
+            log('=== Starting App ===');
+            
             if (!checkAuth()) {
-                document.getElementById('loading-screen').classList.add('hidden');
-                document.getElementById('auth-failed').classList.add('active');
+                log('No auth, redirecting...');
+                window.location.href = './index.html';
                 return;
             }
 
             try {
-                // Load CSS first
-                const cssLink = document.createElement('link');
-                cssLink.rel = 'stylesheet';
-                cssLink.href = '02-style.css';
-                document.head.appendChild(cssLink);
+                // Load CSS
+                updateStatus('Loading CSS...');
+                const css1 = document.createElement('link');
+                css1.rel = 'stylesheet';
+                css1.href = '02-style.css';
+                document.head.appendChild(css1);
 
-                const cssLink2 = document.createElement('link');
-                cssLink2.rel = 'stylesheet';
-                cssLink2.href = '03-variables.css';
-                document.head.appendChild(cssLink2);
+                const css2 = document.createElement('link');
+                css2.rel = 'stylesheet';
+                css2.href = '03-variables.css';
+                document.head.appendChild(css2);
 
-                // Load Core modules
+                // Load Core
+                updateStatus('Loading Core...');
                 await loadScript('core/04-engine.js');
+                
+                // Check if Royal exists
+                log('Checking Royal...');
+                if (typeof Royal === 'undefined') {
+                    throw new Error('Royal is undefined after loading 04-engine.js');
+                }
+                log('Royal found: ' + typeof Royal);
+                log('Royal.init: ' + typeof Royal.init);
+
                 await loadScript('core/05-router.js');
                 await loadScript('core/06-events.js');
                 await loadScript('core/07-utils.js');
                 await loadScript('core/08-http.js');
                 await loadScript('core/09-database.js');
 
-                // Load UI modules
+                // Load Modules
+                updateStatus('Loading Modules...');
                 await loadScript('modules/10-auth.js');
                 await loadScript('modules/11-header.js');
                 await loadScript('modules/12-sidebar.js');
                 await loadScript('modules/13-bottom-nav.js');
                 await loadScript('modules/14-extra-menu.js');
-
-                // Load Feature modules
                 await loadScript('modules/15-streak.js');
                 await loadScript('modules/16-predict.js');
                 await loadScript('modules/17-team.js');
@@ -279,6 +206,7 @@
                 await loadScript('modules/24-payment.js');
 
                 // Load Pages
+                updateStatus('Loading Pages...');
                 await loadScript('pages/25-home.js');
                 await loadScript('pages/26-league-page.js');
                 await loadScript('pages/27-matches-page.js');
@@ -290,35 +218,34 @@
                 await loadScript('pages/33-shop-page.js');
                 await loadScript('pages/34-chat-page.js');
 
-                // Initialize Royal Engine
-                if (typeof Royal !== 'undefined' && Royal.init) {
+                // Initialize
+                updateStatus('Initializing Royal...');
+                if (Royal && Royal.init) {
                     await Royal.init();
-                    console.log('✅ App initialized successfully');
+                    log('✅ Royal initialized');
                     
                     setTimeout(() => {
-                        document.getElementById('loading-screen').classList.add('hidden');
+                        document.getElementById('loading-screen').style.opacity = '0';
+                        setTimeout(() => {
+                            document.getElementById('loading-screen').style.display = 'none';
+                        }, 500);
                     }, 500);
                 } else {
-                    throw new Error('Royal Engine not found after loading scripts');
+                    throw new Error('Royal.init not found');
                 }
+
             } catch (error) {
-                console.error('❌ App initialization failed:', error);
-                showError('خطا در بارگذاری: ' + error.message);
+                console.error(error);
+                showError('خطا: ' + error.message);
             }
         }
 
-        // Start app
+        // Start
         if (document.readyState === 'loading') {
             document.addEventListener('DOMContentLoaded', initApp);
         } else {
             initApp();
         }
-
-        // Prevent back button
-        history.pushState(null, null, location.href);
-        window.onpopstate = function () {
-            history.go(1);
-        };
     </script>
 
 </body>
