@@ -2,11 +2,15 @@
 <html lang="fa">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>EITBAL - Iranian Soccer Interface</title>
-    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&display=swap" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>EITBAL ROYAL - ورود</title>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&display=swap" rel="stylesheet">
     <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
+        * { 
+            margin: 0; 
+            padding: 0; 
+            box-sizing: border-box; 
+        }
 
         body {
             direction: rtl;
@@ -40,8 +44,15 @@
             animation: rise-and-fade linear infinite;
         }
 
-        .particle.gold { background: #FFD700; box-shadow: 0 0 10px #FFD700; }
-        .particle.white { background: #FFFFFF; box-shadow: 0 0 10px #FFFFFF; }
+        .particle.gold { 
+            background: #FFD700; 
+            box-shadow: 0 0 10px #FFD700; 
+        }
+        
+        .particle.white { 
+            background: #FFFFFF; 
+            box-shadow: 0 0 10px #FFFFFF; 
+        }
 
         @keyframes rise-and-fade {
             0% { transform: translateY(0) scale(0.3); opacity: 0; }
@@ -96,7 +107,6 @@
             filter: drop-shadow(0 0 15px rgba(255, 215, 0, 0.5));
         }
 
-        /* فیلد شماره موبایل ایران */
         .input-box {
             position: relative;
             margin-bottom: 25px;
@@ -137,14 +147,12 @@
             letter-spacing: 2px;
         }
 
-        /* رفع مشکل وارد کردن عدد - حذف readonly */
         input[type="tel"]:focus,
         input[type="text"]:focus {
             background: rgba(0, 0, 0, 0.9);
             border-color: rgba(255, 215, 0, 0.6);
         }
 
-        /* فیلد کد تأیید */
         .verification-box {
             position: relative;
             margin-bottom: 25px;
@@ -183,13 +191,13 @@
             opacity: 0.3; 
             transition: 0.4s; 
         }
+        
         .gender-option.active { 
             opacity: 1; 
             transform: scale(1.3); 
             text-shadow: 0 0 25px #FFD700; 
         }
 
-        /* دکمه اصلی */
         .main-btn {
             width: 100%;
             padding: 22px;
@@ -210,7 +218,6 @@
             box-shadow: 0 0 50px rgba(255, 215, 0, 0.8);
         }
 
-        /* دکمه‌های زیرین */
         .mode-switch {
             display: flex;
             justify-content: center;
@@ -252,7 +259,6 @@
             margin-right: 5px;
         }
 
-        /* دکمه شماره تست */
         .test-account {
             display: flex;
             justify-content: center;
@@ -280,6 +286,16 @@
             transform: scale(1.05);
             box-shadow: 0 0 20px rgba(255, 215, 0, 0.3);
         }
+
+        @keyframes slideDown {
+            from { opacity: 0; transform: translateX(-50%) translateY(-50px); }
+            to { opacity: 1; transform: translateX(-50%) translateY(0); }
+        }
+        
+        @keyframes slideUp {
+            from { opacity: 1; transform: translateX(-50%) translateY(0); }
+            to { opacity: 0; transform: translateX(-50%) translateY(-50px); }
+        }
     </style>
 </head>
 <body>
@@ -292,7 +308,6 @@
     <div class="content">
         <h1 class="logo">EITBAL</h1>
         
-        <!-- فیلد شماره موبایل ایران - کاملاً قابل تایپ -->
         <div class="input-box">
             <span class="flag-icon">🇮🇷</span>
             <span class="prefix">+98</span>
@@ -304,7 +319,6 @@
                    autocomplete="off">
         </div>
 
-        <!-- دکمه شماره تست -->
         <div class="test-account">
             <button class="test-btn" onclick="fillTestNumber()">
                 <span>🧪</span>
@@ -312,7 +326,6 @@
             </button>
         </div>
 
-        <!-- فیلد کد تأیید -->
         <div class="verification-box" id="verificationBox">
             <span class="code-icon">🔑</span>
             <input type="text" 
@@ -342,11 +355,12 @@
 </div>
 
 <script>
-    // === سیستم ذرات سراسری ===
+    // === متغیرهای ثابت ===
+    const TEST_PHONE_NUMBER = "9120000001";
     const container = document.getElementById('particles');
-    const particleCount = 1000;
-
-    function createParticle() {
+    
+    // === سیستم ذرات ===
+    for (let i = 0; i < 1000; i++) {
         const p = document.createElement('div');
         const isGold = Math.random() > 0.4;
         p.className = `particle ${isGold ? 'gold' : 'white'}`;
@@ -363,21 +377,23 @@
         container.appendChild(p);
     }
 
-    for (let i = 0; i < particleCount; i++) {
-        createParticle();
-    }
+    // === متغیرهای وضعیت ===
+    let currentMode = 'login';
+    let timerInterval;
+    let timeLeft = 30;
 
-    // === شماره تست اختصاصی ===
-    const TEST_PHONE_NUMBER = "9120000001";
+    // === محدود کردن ورودی به اعداد ===
+    document.getElementById('phone').addEventListener('input', function (e) {
+        this.value = this.value.replace(/[^0-9]/g, '');
+        if (this.value.length > 10) this.value = this.value.slice(0, 10);
+    });
 
-    // === پر کردن شماره تست ===
-    function fillTestNumber() {
-        const phoneInput = document.getElementById('phone');
-        phoneInput.value = TEST_PHONE_NUMBER;
-        showMessage('✅ شماره تست وارد شد', 'success');
-    }
+    document.getElementById('verifyCode').addEventListener('input', function (e) {
+        this.value = this.value.replace(/[^0-9]/g, '');
+        if (this.value.length > 4) this.value = this.value.slice(0, 4);
+    });
 
-    // === نمایش پیام موقت ===
+    // === توابع کمکی ===
     function showMessage(msg, type = 'success') {
         const toast = document.createElement('div');
         toast.style.cssText = `
@@ -404,28 +420,11 @@
         }, 2500);
     }
 
-    // === محدود کردن ورودی به اعداد ===
-    document.getElementById('phone').addEventListener('input', function (e) {
-        // فقط اعداد مجاز هستند
-        this.value = this.value.replace(/[^0-9]/g, '');
-        if (this.value.length > 10) this.value = this.value.slice(0, 10);
-    });
-
-    // === مدیریت فیلد کد تأیید ===
-    const verifyCodeInput = document.getElementById('verifyCode');
-    if (verifyCodeInput) {
-        verifyCodeInput.addEventListener('input', function (e) {
-            this.value = this.value.replace(/[^0-9]/g, '');
-            if (this.value.length > 4) this.value = this.value.slice(0, 4);
-        });
+    function fillTestNumber() {
+        document.getElementById('phone').value = TEST_PHONE_NUMBER;
+        showMessage('✅ شماره تست وارد شد', 'success');
     }
 
-    // === متغیرهای وضعیت ===
-    let currentMode = 'login';
-    let timerInterval;
-    let timeLeft = 30;
-
-    // === مدیریت حالت ورود و ثبت‌نام ===
     function setMode(mode) {
         currentMode = mode;
         const mainBtn = document.getElementById('main-submit');
@@ -448,13 +447,11 @@
         }
     }
 
-    // === مدیریت انتخاب جنسیت ===
     function setGender(el) {
         document.querySelectorAll('.gender-option').forEach(opt => opt.classList.remove('active'));
         el.classList.add('active');
     }
 
-    // === مدیریت ارسال فرم ===
     function handleSubmit() {
         const phone = document.getElementById('phone').value;
         const gender = document.querySelector('.gender-option.active')?.innerHTML || '👨';
@@ -465,36 +462,37 @@
             return;
         }
 
-        // بررسی شماره تست
         if (phone !== TEST_PHONE_NUMBER) {
-            showMessage('❌ فقط شماره تست 9120000000 قابل قبول است', 'error');
+            showMessage('❌ فقط شماره تست 9120000001 قابل قبول است', 'error');
             return;
         }
 
-        if (currentMode === 'login') {
-            showMessage(`✅ کد ورود به شماره ۰۹۸${phone} ارسال شد`, 'success');
-        } else {
+        if (currentMode === 'register') {
             if (!verifyCode || verifyCode.length < 4) {
                 showMessage('❌ لطفاً کد تأیید ۴ رقمی را وارد کنید', 'error');
                 return;
             }
             
-            // === ذخیره لاگین و ریدایرکت ===
+            // ذخیره اطلاعات کاربر
             localStorage.setItem('eitabal_user', JSON.stringify({
                 phone: phone,
-                gender: gender
+                gender: gender === '👨' ? 'male' : 'female',
+                loginTime: new Date().toISOString()
             }));
             
-            showMessage(`✅ ثبت‌نام شما با موفقیت انجام شد`, 'success');
+            showMessage('✅ ثبت‌نام شما با موفقیت انجام شد', 'success');
             
-            // ریدایرکت به app.html بعد از ۱ ثانیه
+            // ریدایرکت به صفحه اصلی
             setTimeout(() => {
                 window.location.href = './app.html';
             }, 1000);
+        } else {
+            // ورود - فقط پیام می‌دهد و به صفحه ثبت‌نام هدایت می‌کند
+            showMessage('✅ برای ورود، ابتدا ثبت‌نام کنید', 'success');
+            setMode('register');
         }
     }
 
-    // === تایمر برای کد تأیید ===
     function startTimer() {
         clearInterval(timerInterval);
         timeLeft = 30;
@@ -531,20 +529,9 @@
     // === تنظیم اولیه ===
     window.onload = function() {
         document.getElementById('phone').value = '';
-        if (verifyCodeInput) verifyCodeInput.value = '';
+        document.getElementById('verifyCode').value = '';
     };
 </script>
-
-<style>
-    @keyframes slideDown {
-        from { opacity: 0; transform: translateX(-50%) translateY(-50px); }
-        to { opacity: 1; transform: translateX(-50%) translateY(0); }
-    }
-    @keyframes slideUp {
-        from { opacity: 1; transform: translateX(-50%) translateY(0); }
-        to { opacity: 0; transform: translateX(-50%) translateY(-50px); }
-    }
-</style>
 
 </body>
 </html>
