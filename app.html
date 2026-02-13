@@ -5,25 +5,42 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
   <title>ایتبال رویال ⚽ | EITABAL ROYAL</title>
   
-  <!-- بررسی لاگین - فقط یک بار و صحیح -->
+  <!-- ========== IMPORTANT: بررسی لاگین - باید اولین چیزی باشد که اجرا می‌شود ========== -->
   <script>
     (function() {
+      // این تابع بلافاصله اجرا می‌شود
+      console.log('🔍 Checking login status...');
+      
       try {
-        const user = localStorage.getItem('eitabal_user');
-        console.log('Checking login - User exists:', !!user);
+        // بررسی وجود کاربر در localStorage
+        const userData = localStorage.getItem('eitabal_user');
+        console.log('User data exists:', !!userData);
         
-        if (!user) {
-          window.location.href = './index.html';
-          return;
+        if (!userData) {
+          // اگر کاربر لاگین نکرده بود، به صفحه لاگین بروید
+          console.log('⛔ No user found, redirecting to login page...');
+          window.location.replace('./index.html');
+          return; // توقف اجرای بقیه کد
         }
         
-        // ذخیره اطلاعات کاربر برای استفاده بعدی
-        window.currentUser = JSON.parse(user);
-        console.log('User logged in:', window.currentUser);
+        // بررسی معتبر بودن داده
+        try {
+          const user = JSON.parse(userData);
+          console.log('✅ User logged in:', user.phone);
+          
+          // ذخیره در حافظه سراسری برای استفاده بقیه قسمت‌ها
+          window.currentUser = user;
+          
+        } catch (e) {
+          // اگر داده خراب بود، پاکش کن و برو به لاگین
+          console.error('❌ Invalid user data, clearing...');
+          localStorage.removeItem('eitabal_user');
+          window.location.replace('./index.html');
+        }
         
-      } catch(e) {
-        console.error('Login check error:', e);
-        window.location.href = './index.html';
+      } catch (error) {
+        console.error('❌ Login check error:', error);
+        window.location.replace('./index.html');
       }
     })();
   </script>
