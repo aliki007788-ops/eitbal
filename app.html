@@ -1,26 +1,40 @@
-
 <!DOCTYPE html>
 <html lang="fa" dir="rtl">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
   <title>ایتبال رویال ⚽ | EITABAL ROYAL</title>
+  
+  <!-- بررسی لاگین - فقط یک بار و صحیح -->
   <script>
-    if (!localStorage.getItem('eitabal_user')) {
-        window.location.replace('./index.html');
-    }
-</script>
+    (function() {
+      try {
+        const user = localStorage.getItem('eitabal_user');
+        console.log('Checking login - User exists:', !!user);
+        
+        if (!user) {
+          window.location.href = './index.html';
+          return;
+        }
+        
+        // ذخیره اطلاعات کاربر برای استفاده بعدی
+        window.currentUser = JSON.parse(user);
+        console.log('User logged in:', window.currentUser);
+        
+      } catch(e) {
+        console.error('Login check error:', e);
+        window.location.href = './index.html';
+      }
+    })();
+  </script>
+  
   <!-- Fonts -->
   <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;400;600;700;900&display=swap" rel="stylesheet">
   
   <!-- GSAP -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
-  <script>
-    if (!localStorage.getItem('eitabal_user')) {
-        window.location.href = './index.html';
-    }
-</script>
+  
   <style>
     /* ==================== RESET ROYAL ==================== */
     * {
@@ -512,7 +526,7 @@
       font-weight: 700;
     }
 
-    /* ==================== دکمه وسط سلطنتی (۴ سرویس) ==================== */
+    /* ==================== دکمه وسط سلطنتی (۴+۲ سرویس) ==================== */
     .royal-crown-button {
       width: 75px;
       height: 75px;
@@ -1191,15 +1205,15 @@
   <div class="royal-sidebar" id="royalSidebar">
     <div class="sidebar-crown">
       <div class="crown-avatar">⚽</div>
-      <div class="sidebar-user-name">علی رضایی</div>
+      <div class="sidebar-user-name" id="sidebarUserName">علی رضایی</div>
       <div class="sidebar-user-title">
-        <span>👑 استاد تحلیل</span>
-        <span>🎯 ۳۱۲</span>
+        <span id="sidebarUserTitle">👑 استاد تحلیل</span>
+        <span id="sidebarUserScore">🎯 ۳۱۲</span>
       </div>
     </div>
 
     <div class="sidebar-menu-royal">
-      <a href="#" class="menu-item-royal" onclick="changePageRoyal('home', this); return false;">
+      <a href="#" class="menu-item-royal active" onclick="changePageRoyal('home', this); return false;">
         <div class="menu-icon-royal">🏠</div>
         <span class="menu-text-royal">تالار سلطنتی</span>
       </a>
@@ -1947,7 +1961,6 @@
           ease: 'backOut(1.7)'
         });
         
-        // انیمیشن دکمه وسط
         gsap.to('.royal-crown-button', {
           rotation: 180,
           scale: 1.2,
@@ -1976,15 +1989,12 @@
 
     // ==================== سیستم تغییر صفحه ====================
     function changePageRoyal(pageId, element) {
-      // مخفی کردن همه صفحات
       document.querySelectorAll('.royal-page').forEach(page => {
         page.classList.remove('active');
       });
       
-      // نمایش صفحه انتخاب شده
       document.getElementById(pageId + 'RoyalPage').classList.add('active');
       
-      // آپدیت کلاس active در منوی پایین
       document.querySelectorAll('.nav-item-royal').forEach(item => {
         item.classList.remove('active');
       });
@@ -1993,16 +2003,13 @@
         element.classList.add('active');
       }
       
-      // آپدیت کلاس active در سایدبار
       document.querySelectorAll('.menu-item-royal').forEach(item => {
         item.classList.remove('active');
       });
       
-      // بستن منوها
       closeRoyalExtraMenu();
       closeSidebarRoyal();
       
-      // انیمیشن ورود به صفحه
       gsap.from('.royal-page.active .crystal-card', {
         y: 30,
         opacity: 0,
@@ -2044,19 +2051,16 @@
         return;
       }
       
-      // کاهش انرژی
       royalEnergy -= 5;
       const percent = (royalEnergy / royalMaxEnergy) * 100;
       royalEnergyBar.style.width = percent + '%';
       royalEnergyText.textContent = royalEnergy + '/1000';
       
-      // افزایش آمار
       royalTotalTaps++;
       royalTodayTaps++;
       royalTotalTapsEl.textContent = royalTotalTaps.toLocaleString();
       royalTodayTapsEl.textContent = royalTodayTaps.toLocaleString();
       
-      // انیمیشن دکمه
       gsap.to(royalTapButton, {
         scale: 0.85,
         rotation: 15,
@@ -2066,7 +2070,6 @@
         ease: 'power1.inOut'
       });
       
-      // افکت عدد طلایی
       createRoyalTapEffect();
     }
 
@@ -2168,10 +2171,14 @@
 
     // ==================== مقداردهی اولیه سلطنتی ====================
     window.onload = function() {
-      // صفحه خانه فعال است
+      // نمایش نام کاربر از localStorage
+      if (window.currentUser) {
+        const userName = window.currentUser.gender === 'female' ? 'سارا' : 'علی';
+        document.getElementById('sidebarUserName').textContent = userName + ' رضایی';
+      }
+      
       document.querySelector('.nav-item-royal').classList.add('active');
       
-      // انیمیشن ورود سلطنتی
       gsap.from('.crystal-card', {
         y: 50,
         opacity: 0,
