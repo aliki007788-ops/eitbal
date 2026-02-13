@@ -4,10 +4,14 @@
   "routes": [
     {
       "src": "/",
-      "dest": "/app.html"
+      "dest": "/index.html"
     },
     {
       "src": "/index.html",
+      "dest": "/index.html"
+    },
+    {
+      "src": "/app.html",
       "dest": "/app.html"
     },
     {
@@ -35,16 +39,8 @@
       "dest": "/admin/$1"
     },
     {
-      "src": "/app.html",
-      "dest": "/app.html"
-    },
-    {
       "src": "/(.*\\.(js|css|png|jpg|svg|ico|sql|txt|json))",
       "dest": "/$1"
-    },
-    {
-      "src": "/(.*)",
-      "dest": "/app.html"
     }
   ]
 }
