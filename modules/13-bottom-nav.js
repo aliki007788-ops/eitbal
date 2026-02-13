@@ -1,7 +1,10 @@
 /* ===========================================
-   MODULE: BOTTOM NAV - منوی پایین
-   نسخه: 2.0.0
-   وضعیت: ✅ مستقل
+   MODULE: BOTTOM NAV - منوی پایین با دکمه تاجدار ثابت
+   نسخه: 2.1.0
+   تغییرات: 
+   - دکمه تاجدار در وسط و کوچکتر
+   - بدون چرخش (فقط حرکت به طرفین)
+   - رفع مشکل جایگذاری ماژول‌ها بعد از افکت
 =========================================== */
 
 const BottomNav = {
@@ -29,32 +32,33 @@ const BottomNav = {
   // ========== GET HTML ==========
   _getHTML() {
     return `
-      <div class="nav-item ${Router.currentPage === 'home' ? 'active' : ''}" onclick="Router.goTo('home')">
-        <span class="nav-icon">🏠</span>
-        <span class="nav-label">خانه</span>
+      <div class="nav-item-royal ${Router.currentPage === 'home' ? 'active' : ''}" onclick="Router.goTo('home')">
+        <span class="nav-icon-royal">🏠</span>
+        <span class="nav-label-royal">خانه</span>
       </div>
-      <div class="nav-item ${Router.currentPage === 'league' ? 'active' : ''}" onclick="Router.goTo('league')">
-        <span class="nav-icon">🏆</span>
-        <span class="nav-label">لیگ</span>
+      <div class="nav-item-royal ${Router.currentPage === 'league' ? 'active' : ''}" onclick="Router.goTo('league')">
+        <span class="nav-icon-royal">🏆</span>
+        <span class="nav-label-royal">لیگ</span>
       </div>
-      <div class="nav-item ${Router.currentPage === 'matches' ? 'active' : ''}" onclick="Router.goTo('matches')">
-        <span class="nav-icon">📅</span>
-        <span class="nav-label">مسابقات</span>
+      <div class="nav-item-royal ${Router.currentPage === 'matches' ? 'active' : ''}" onclick="Router.goTo('matches')">
+        <span class="nav-icon-royal">📅</span>
+        <span class="nav-label-royal">مسابقات</span>
       </div>
-      <div class="nav-item ${Router.currentPage === 'news' ? 'active' : ''}" onclick="Router.goTo('news')">
-        <span class="nav-icon">📰</span>
-        <span class="nav-label">اخبار</span>
+      <div class="nav-item-royal ${Router.currentPage === 'news' ? 'active' : ''}" onclick="Router.goTo('news')">
+        <span class="nav-icon-royal">📰</span>
+        <span class="nav-label-royal">اخبار</span>
       </div>
       
-      <div class="crown-button" onclick="ExtraMenu.toggle()">
-        <span class="crown-icon">👑</span>
+      <!-- دکمه تاجدار ثابت و کوچک -->
+      <div class="royal-crown-button-fixed" onclick="ExtraMenu.toggle()">
+        <span class="crown-icon-fixed">👑</span>
       </div>
     `;
   },
   
   // ========== SET ACTIVE ==========
   setActive(page) {
-    document.querySelectorAll('.nav-item').forEach((item, index) => {
+    document.querySelectorAll('.nav-item-royal').forEach((item, index) => {
       const pages = ['home', 'league', 'matches', 'news'];
       item.classList.toggle('active', pages[index] === page);
     });
